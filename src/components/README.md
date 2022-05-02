@@ -1,0 +1,1 @@
+`src/components` defines all the UI for this application. Components in this directory do not have any responsibilities such as page transitions or API communication, and concentrate on their UI functionality.

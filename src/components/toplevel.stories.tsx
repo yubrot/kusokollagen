@@ -3,6 +3,7 @@ import CreateTemplateImpl from './TemplateCreationFlow';
 import ApplicationFooterImpl from './ApplicationFooter';
 import PagerTemplateListImpl from './PagerTemplateList';
 import ScrollTemplateListImpl from './ScrollTemplateList';
+import SignInRequiredCardImpl from './SignInRequiredCard';
 import UserSettingsImpl from './UserSettings';
 import TemplateEditorImpl from './TemplateEditor';
 import ApplicationHeaderImpl from './ApplicationHeader';
@@ -45,6 +46,16 @@ export function ApplicationCover(): React.ReactElement {
     <div className="container-lg">
       <div className="pseudo-frame">
         <ApplicationCoverImpl />
+      </div>
+    </div>
+  );
+}
+
+export function SignInRequiredCard(): React.ReactElement {
+  return (
+    <div className="container-lg">
+      <div className="pseudo-frame">
+        <SignInRequiredCardImpl />
       </div>
     </div>
   );

@@ -1,0 +1,66 @@
+type Template {
+  id: ID!
+  name: String!
+  owned: Boolean!
+  accessibility: Accessibility!
+  labels: [Label!]!
+  image: String!
+}
+
+enum Accessibility {
+  PRIVATE
+  PUBLIC
+}
+
+type Label {
+  size: Float!
+  color: String!
+  text: String!
+  bold: Boolean!
+  vertical: Boolean!
+  x: Int!
+  y: Int!
+}
+
+type TemplateImageRestriction {
+  mimeTypes: [String!]!
+  fileSize: Int!
+}
+
+type Query {
+  templateImageRestriction: TemplateImageRestriction!
+  template(id: ID!): Template!
+  templates(first: Int!, after: ID, filter: TemplateFilter): [Template!]!
+}
+
+type Mutation {
+  deleteUser(id: ID!): Boolean!
+  createTemplate(name: String!, image: Upload!): ID!
+  updateTemplate(id: ID!, change: TemplateChange!): Boolean!
+  deleteTemplate(id: ID!): Boolean!
+}
+
+input TemplateFilter {
+  owned: Boolean
+  published: Boolean
+  name: String
+}
+
+input TemplateChange {
+  name: String
+  image: Upload
+  accessibility: Accessibility
+  labels: [LabelChange!]
+}
+
+input LabelChange {
+  size: Float!
+  color: String!
+  text: String!
+  bold: Boolean!
+  vertical: Boolean!
+  x: Int!
+  y: Int!
+}
+
+scalar Upload

@@ -1,0 +1,49 @@
+query templateImageRestriction {
+  restriction: templateImageRestriction {
+    mimeTypes
+    fileSize
+  }
+}
+
+query template($id: ID!) {
+  data: template(id: $id) {
+    id
+    name
+    owned
+    accessibility
+    labels {
+      size
+      color
+      text
+      bold
+      vertical
+      x
+      y
+    }
+    image
+  }
+}
+
+query templates($first: Int!, $after: ID, $filter: TemplateFilter) {
+  list: templates(first: $first, after: $after, filter: $filter) {
+    id
+    name
+    image
+  }
+}
+
+mutation deleteUser($id: ID!) {
+  ok: deleteUser(id: $id)
+}
+
+mutation createTemplate($name: String!, $image: Upload!) {
+  id: createTemplate(name: $name, image: $image)
+}
+
+mutation updateTemplate($id: ID!, $change: TemplateChange!) {
+  ok: updateTemplate(id: $id, change: $change)
+}
+
+mutation deleteTemplate($id: ID!) {
+  ok: deleteTemplate(id: $id)
+}

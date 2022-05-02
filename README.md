@@ -33,6 +33,31 @@ After that, set `mysql://<USERNAME>:<PASSWORD>@<ACCESS_HOST_URL>/kusokollagen?ss
 
 We can learn more about Prisma + PlanetScale development flow from [PlanetScale's Prisma guide](https://docs.planetscale.com/tutorials/automatic-prisma-migrations).
 
+### Prepare Object Storage
+
+Kusokollagen stores template images in [Google Cloud Storage](https://cloud.google.com/storage).
+
+```bash
+# Create a bucket and make it public
+$ gsutil mb -b on [-l <LOCATION>] gs://<BUCKET_NAME>
+$ gsutil iam ch allUsers:legacyObjectReader gs://<BUCKET_NAME>
+
+# Create a service account to upload images to the bucket
+$ gcloud iam service-accounts create <SA_NAME> [--display-name="<DISPLAY_NAME>"]
+$ gcloud projects add-iam-policy-binding <GCP_PROJECT_ID> \
+      --member="serviceAccount:<SA_NAME>@<GCP_PROJECT_ID>.iam.gserviceaccount.com" \
+      --role="roles/storage.objectAdmin" \
+      --condition="expression=resource.name.startsWith(\"projects/_/buckets/<BUCKET_NAME>\"),title=only-kusokollagen-bucket"
+
+# Create a key of the service account
+$ gcloud iam service-accounts keys create key.json \
+      --iam-account="<SA_NAME>@<GCP_PROJECT_ID>.iam.gserviceaccount.com"
+```
+
+After that, set the content of `key.json` to `GOOGLE_CLOUD_STORAGE_KEY` (in a single line), and the bucket name to `GOOGLE_CLOUD_STORAGE_TEMPLATE_IMAGES_BUCKET` in your environment variables.
+
+[CORS configuration](https://cloud.google.com/storage/docs/configuring-cors) may also be required.
+
 ### Launch
 
 ```bash

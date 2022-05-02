@@ -7,7 +7,7 @@ const Home: NextPage = () => {
   if (session) {
     return (
       <div className="m-4 flex space-x-2 items-center">
-        <p>Signed in as {session.user?.email}</p>
+        <p>Signed in as {session.user?.id} ({session.user?.role})</p>
         <button className="button primary-button" onClick={() => signOut()}>
           Sign out
         </button>
@@ -16,7 +16,7 @@ const Home: NextPage = () => {
   }
   return (
     <div className="m-4 flex space-x-2 items-center">
-      <p>Not signed in </p>
+      <p>Not signed in</p>
       <button className="button primary-button" onClick={() => signIn()}>
         Sign in
       </button>

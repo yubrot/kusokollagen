@@ -1,12 +1,36 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["referentialIntegrity"]
+  previewFeatures = ["referentialIntegrity", "fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
   provider             = "mysql"
   url                  = env("PRISMA_DATABASE_URL")
   referentialIntegrity = "prisma"
+}
+
+model Template {
+  id            String        @id @default(cuid())
+  name          String
+  ownerId       String
+  accessibility Accessibility
+  image         String
+  content       Json
+  createdAt     DateTime      @default(now())
+
+  owner User @relation(fields: [ownerId], references: [id], onDelete: Restrict)
+
+  @@fulltext([name])
+}
+
+enum Accessibility {
+  PUBLIC
+  PRIVATE
+}
+
+enum Role {
+  USER
+  ADMIN
 }
 
 // For next-auth:
@@ -20,8 +44,10 @@ model User {
   emailVerified DateTime?
   image         String?
   createdAt     DateTime   @default(now())
+  role          Role       @default(USER)
   accounts      Account[]
   sessions      Session[]
+  templates     Template[]
 }
 
 model Account {

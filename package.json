@@ -12,7 +12,7 @@
     "dev": "npm run dev:graphql & npm run dev:next",
     "dev:graphql": "graphql-codegen --watch",
     "dev:next": "next dev",
-    "build": "npm run build:graphql && npm run build:next",
+    "build": "npm run prisma:generate && npm run build:graphql && npm run build:next",
     "build:graphql": "graphql-codegen",
     "build:next": "next build",
     "start": "next start",

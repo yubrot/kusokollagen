@@ -1,7 +1,7 @@
 import storage from './google-cloud/storage';
 import prisma from './prisma/client';
 import { SizeLimitter } from './stream/size-limitter';
-import { pipeline } from 'stream/promises';
+import { pipeline } from './stream/promises';
 import type { ReadStream } from 'fs';
 import crypto from 'crypto';
 

@@ -6,52 +6,19 @@ import type { ReadStream } from 'fs';
 import crypto from 'crypto';
 
 export interface File {
-  // subset of graphql-upload/FileUpload
+  // compatible with graphql-upload/FileUpload
   mimetype: string;
   createReadStream(): ReadStream;
 }
 
-export interface Context {
-  operator(): Promise<Operator | null>;
-  inputError(message: string): never;
-  forbiddenError(message: string): never;
-}
-
-// users
-
-export type Role = 'USER' | 'ADMIN';
+// entities
 
 export interface Operator {
   id: string;
   role: Role;
 }
 
-export async function deleteUser(id: string, ctx: Context): Promise<void> {
-  const operator = await ctx.operator();
-  if (!operator || operator.id != id) return ctx.forbiddenError('User mismatch');
-
-  const takeSize = 50;
-  let cursor = undefined;
-  while (true) {
-    const ts = await prisma.template.findMany({
-      where: { ownerId: operator.id },
-      take: takeSize,
-      cursor,
-    });
-    await prisma.template.deleteMany({ where: { id: { in: ts.map(t => t.id) } } });
-
-    // It's not important to clean up the template images immediately
-    try {
-      for (const t of ts) await deleteTemplateImage(t.image);
-    } catch {}
-
-    if (ts.length != takeSize) break;
-  }
-
-  await prisma.user.deleteMany({ where: { id } });
-}
-
-// templates
+export type Role = 'USER' | 'ADMIN';
 
 export interface Template<Content = TemplateContent> {
   id: string;
@@ -61,10 +28,6 @@ export interface Template<Content = TemplateContent> {
   image: string;
   createdAt: Date;
   content: Content;
-}
-
-function validateTemplateName(name: string, ctx: Context): void {
-  if (name.length == 0 || 200 <= name.length) return ctx.inputError('0 < name.length <= 200');
 }
 
 export type Accessibility = 'PUBLIC' | 'PRIVATE';
@@ -83,9 +46,35 @@ export interface TemplateLabel {
   y: number;
 }
 
-const initialTemplateContent: TemplateContent = {
-  labels: [],
-};
+// use cases
+
+export interface Context {
+  operator(): Promise<Operator | null>;
+  inputError(message: string): never;
+  forbiddenError(message: string): never;
+}
+
+export async function deleteUser(id: string, ctx: Context): Promise<void> {
+  const operator = await ctx.operator();
+  if (!operator || operator.id != id) return ctx.forbiddenError('User mismatch');
+
+  const takeSize = 50;
+  let cursor = undefined;
+  while (true) {
+    const ts = await prisma.template.findMany({
+      where: { ownerId: operator.id },
+      take: takeSize,
+      cursor,
+    });
+
+    await prisma.template.deleteMany({ where: { id: { in: ts.map(t => t.id) } } });
+    for (const t of ts) await deleteTemplateImage(t.image);
+
+    if (ts.length != takeSize) break;
+  }
+
+  await prisma.user.deleteMany({ where: { id } });
+}
 
 export async function getTemplate(id: string, ctx: Context): Promise<Template> {
   const t: Template<any> | null = await prisma.template.findUnique({ where: { id } });
@@ -93,7 +82,7 @@ export async function getTemplate(id: string, ctx: Context): Promise<Template> {
   return t;
 }
 
-export interface TemplateFilter {
+export interface TemplatesFilter {
   name?: string | null;
   owned?: boolean | null;
   published?: boolean | null;
@@ -102,7 +91,7 @@ export interface TemplateFilter {
 export async function getTemplates(
   num: number,
   cursor: string | null,
-  filter: TemplateFilter | null,
+  filter: TemplatesFilter | null,
   ctx: Context
 ): Promise<Template[]> {
   if (num < 0) return [];
@@ -130,6 +119,10 @@ export async function getTemplates(
   return ts;
 }
 
+function validateTemplateName(name: string, ctx: Context): void {
+  if (name.length == 0 || 200 <= name.length) return ctx.inputError('0 < name.length <= 200');
+}
+
 export async function createTemplate(name: string, imageFile: File, ctx: Context): Promise<string> {
   validateTemplateName(name, ctx);
 
@@ -155,6 +148,10 @@ export async function createTemplate(name: string, imageFile: File, ctx: Context
   }
 }
 
+const initialTemplateContent: TemplateContent = {
+  labels: [],
+};
+
 export interface TemplateChange {
   name?: string | null;
   image?: File | null;
@@ -166,7 +163,7 @@ export type TemplateContentChange = { [P in keyof TemplateContent]?: TemplateCon
 
 export async function updateTemplate(
   id: string,
-  { name, image, accessibility, content }: TemplateChange,
+  { name, image: imageFile, accessibility, content }: TemplateChange,
   ctx: Context
 ): Promise<boolean> {
   if (name) validateTemplateName(name, ctx);
@@ -181,18 +178,23 @@ export async function updateTemplate(
     return ctx.forbiddenError('Only OWNER can change the template accessibility');
   }
 
-  if (image) await updateTemplateImage(t.image, image);
+  // Create a template image if updated
+  const image = imageFile ? await createTemplateImage(imageFile) : undefined;
 
   await prisma.template.update({
     where: { id },
     data: {
       name: name ?? undefined,
       accessibility: accessibility ?? undefined,
+      image,
       content: content
         ? (updateTemplateContent(t.content, content) as any) // TemplateContent -> JsonValue
         : undefined,
     },
   });
+
+  // Delete the previous template image
+  if (image) await deleteTemplateImage(t.image);
 
   return true;
 }
@@ -212,16 +214,10 @@ export async function deleteTemplate(id: string, ctx: Context): Promise<boolean>
   if (t.ownerId != operator.id) return ctx.forbiddenError('User mismatch');
 
   await prisma.template.delete({ where: { id } });
-
-  // It's not important to clean up the template image immediately
-  try {
-    await deleteTemplateImage(t.image);
-  } catch {}
+  await deleteTemplateImage(t.image);
 
   return true;
 }
-
-// template-images
 
 const templateImagesBucket = storage.bucket(
   process.env.GOOGLE_CLOUD_STORAGE_TEMPLATE_IMAGES_BUCKET!
@@ -232,25 +228,26 @@ export const templateImageRestriction = {
   fileSize: 4 * 1000 * 1000,
 };
 
-export async function createTemplateImage(file: File): Promise<string> {
-  const id = crypto.randomBytes(16).toString('hex');
-  await updateTemplateImage(id, file);
-  return id;
-}
-
-export async function updateTemplateImage(id: string, file: File): Promise<void> {
+async function createTemplateImage(file: File): Promise<string> {
   if (!templateImageRestriction.mimeTypes.find(mimeType => mimeType == file.mimetype)) {
     throw new Error(`Unsupported MIME Type: ${file.mimetype}`);
   }
 
+  const id = crypto.randomBytes(16).toString('hex');
   const src = file.createReadStream();
   const dest = templateImagesBucket.file(id).createWriteStream({ contentType: file.mimetype });
   const sizeLimitter = new SizeLimitter(templateImageRestriction.fileSize, src, dest);
   await pipeline(src, sizeLimitter, dest);
+  return id;
 }
 
-export async function deleteTemplateImage(id: string): Promise<void> {
-  await templateImagesBucket.file(id).delete({ ignoreNotFound: true });
+async function deleteTemplateImage(id: string): Promise<boolean> {
+  try {
+    await templateImagesBucket.file(id).delete({ ignoreNotFound: true });
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 export function templateImagePublicUrl(id: string): string {

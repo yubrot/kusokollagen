@@ -1,24 +1,33 @@
-# Kusokollagen
+[![](./screenshots/editor.png)](https://kusokollagen.vercel.app/t/cl2ps78w4004609l3zgf2lfer)
 
-## Setup
+- [Live Demo](https://kusokollagen.vercel.app)
+- [Random Notes (Japanese)](https://yubrot.github.io/2022/05/kusokollagen/)
 
-For local development, copy `.env.example` to `.env.local` and set environment variables in it.
+# About
 
-### Initialize Google OAuth client for [next-auth Google sign-in](https://next-auth.js.org/providers/google)
+Kusokollagen is a web application to quickly generate "Kusokora" images. You can create and manage "Kusokora" templates and quickly generate "Kusokora" images by replacing the label strings in the template.
+
+Kusokollagen is built with [Next.js](https://nextjs.org/), [Prisma](https://www.prisma.io/), and [GraphQL](https://graphql.org/), and is designed to run primarily on serverless platforms.
+
+# Setup
+
+To run Kusokollagen locally, copy `.env.example` to `.env.local` and set environment variables in it.
+
+## Initialize Google OAuth client for [next-auth Google sign-in](https://next-auth.js.org/providers/google)
 
 1. Open `APIs & Services` on your GCP project.
 2. Initialize `OAuth consent screen` as `External`.
 3. In `Credentials`, create `OAuth client ID` with
    - Application type: `Web application`
    - Authorized JavaScript origins: `your domain`
-     - `"http://localhost:3000"` for local development
+     - `"http://localhost:3000"` for local development (Next.js default)
    - Authorized redirect URIs: `your domain + "/api/auth/callback/google"`
      - `"http://localhost:3000/api/auth/callback/google"` for local development
 4. Set your Client ID to `GOOGLE_OAUTH_CLIENT_ID`, and Client secret to `GOOGLE_OAUTH_CLIENT_SECRET` in your environment variables.
 
-When deploying to production, `NEXTAUTH_URL` and `NEXTAUTH_SECRET` are also required by [next-auth](https://next-auth.js.org/configuration/options).
+When deploying to production, `NEXTAUTH_URL` and `NEXTAUTH_SECRET` are also required. See next-auth [Options](https://next-auth.js.org/configuration/options).
 
-### Prepare Database
+## Prepare Database
 
 We have tested our application with MySQL hosted on [PlanetScale](https://planetscale.com/).
 For example, we can initialize PlanetScale database as follows:
@@ -33,7 +42,7 @@ After that, set `mysql://<USERNAME>:<PASSWORD>@<ACCESS_HOST_URL>/kusokollagen?ss
 
 We can learn more about Prisma + PlanetScale development flow from [PlanetScale's Prisma guide](https://docs.planetscale.com/tutorials/automatic-prisma-migrations).
 
-### Prepare Object Storage
+## Prepare Object Storage
 
 Kusokollagen stores template images in [Google Cloud Storage](https://cloud.google.com/storage).
 
@@ -58,7 +67,7 @@ After that, set the content of `key.json` to `GOOGLE_CLOUD_STORAGE_KEY` (in a si
 
 [CORS configuration](https://cloud.google.com/storage/docs/configuring-cors) may also be required.
 
-### Launch
+## Launch
 
 ```bash
 # for development
@@ -76,7 +85,11 @@ $ NEXTAUTH_URL=https:/... \
 
 We can also use `npm run ladle` for React Components development and `npm run prisma:studio` for database browsing.
 
-## Resources
+## Deploy to Vercel
+
+By setting environment variables as you would in your local environment, You can deploy to Vercel with Vercel's Next.js default settings.
+
+# Resources
 
 - Icons
   - [Heroicons](https://heroicons.com/)
@@ -84,3 +97,5 @@ We can also use `npm run ladle` for React Components development and `npm run pr
   - [Entypo](http://www.entypo.com/)
 - Fonts
   - [GenEi Antique](http://okoneya.jp/font/) ([SIL Open Font License](http://scripts.sil.org/OFL))
+- Screenshot images
+  - [いらすとや](https://www.irasutoya.com/)

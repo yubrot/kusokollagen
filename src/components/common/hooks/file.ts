@@ -1,9 +1,9 @@
 /**
- * Hooks to handle file drop events.
+ * Hooks to handle file drop and file paste events.
  * @module
  */
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, DependencyList } from 'react';
 
 export interface FileDrop {
   ref(node: HTMLElement | null): void;
@@ -47,4 +47,21 @@ export function useFileDrop(onDrop?: (files: FileList) => void): FileDrop {
   }, [container, hasDrop]);
 
   return { ref: setContainer, isDropping };
+}
+
+export function useFilePaste(onPaste: (file: File) => void, deps: DependencyList): void {
+  useEffect(() => {
+    const handlePaste = (ev: ClipboardEvent) => {
+      const items = ev.clipboardData?.items;
+      if (!items) return;
+
+      for (const item of items) {
+        const file = item.getAsFile();
+        if (file) onPaste(file);
+      }
+    };
+
+    document.addEventListener('paste', handlePaste);
+    return () => document.removeEventListener('paste', handlePaste);
+  }, deps); // eslint-disable-line react-hooks/exhaustive-deps
 }

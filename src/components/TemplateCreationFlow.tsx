@@ -3,7 +3,7 @@ import Image from './common/Image';
 import Pager from './common/Pager';
 import { progress } from './common/Progress';
 import { toast } from './common/Toast';
-import { useFileDrop } from './common/hooks/file-drop';
+import { useFileDrop, useFilePaste } from './common/hooks/file';
 import { useDetach } from './common/hooks/orphan';
 import { FormEvent, useCallback, useState } from 'react';
 
@@ -16,7 +16,7 @@ export interface Props {
 }
 
 export default function TemplateCreationFlow({
-  supportedImage,
+  supportedImage: { mimeTypes, fileSize },
   createTemplate,
 }: Props): React.ReactElement {
   const detach = useDetach();
@@ -27,15 +27,17 @@ export default function TemplateCreationFlow({
 
   const setImageAndContinueToInputName = useCallback(
     (file: File) => {
-      if (!supportedImage.mimeTypes.find(mimeType => mimeType == file.type)) {
-        const supportedFileTypes = supportedImage.mimeTypes.join(', ');
+      if (currentPage != 0) return;
+
+      if (!mimeTypes.find(mimeType => mimeType == file.type)) {
+        const supportedFileTypes = mimeTypes.join(', ');
         detach(toast('warn', `Unsupported file type. Expected ${supportedFileTypes}.`));
         setCurrentPage(0);
         return;
       }
 
-      if (supportedImage.fileSize < file.size) {
-        const mb = supportedImage.fileSize / 1000 / 1000;
+      if (fileSize < file.size) {
+        const mb = fileSize / 1000 / 1000;
         detach(toast('warn', `File size is too large, no more than ${mb}MB is allowed.`));
         setCurrentPage(0);
         return;
@@ -44,7 +46,7 @@ export default function TemplateCreationFlow({
       setImageFile(file);
       setCurrentPage(1);
     },
-    [detach, supportedImage]
+    [currentPage, detach, fileSize, mimeTypes]
   );
 
   const continueToCreateTemplate = useCallback(
@@ -67,6 +69,8 @@ export default function TemplateCreationFlow({
     if (!files) return;
     setImageAndContinueToInputName(files[0]);
   });
+
+  useFilePaste(setImageAndContinueToInputName, [setImageAndContinueToInputName]);
 
   return (
     <div className="container-sm my-12 card">
@@ -95,7 +99,7 @@ export default function TemplateCreationFlow({
             <span>Select a local image</span>
             <input
               type="file"
-              accept={supportedImage.mimeTypes.join(',')}
+              accept={mimeTypes.join(',')}
               className="hidden"
               onChange={ev => {
                 if (!ev.target.files) return;

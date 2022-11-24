@@ -1,12 +1,12 @@
 import LoadingSpinner from './LoadingSpinner';
-import { useDeferredEffect } from './hooks/defer';
+import { useDelayedEffect } from './hooks/delay';
 import { useState } from 'react';
 
 export interface Props {}
 
 export default function Progress(_: Props): React.ReactElement {
   const [show, setShow] = useState(false);
-  useDeferredEffect(() => setShow(true), 100, []);
+  useDelayedEffect(() => setShow(true), 100, []);
 
   return (
     <div

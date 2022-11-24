@@ -5,7 +5,7 @@
 
 import { useCallback, useRef, useEffect, DependencyList, useState } from 'react';
 
-export function useDefer(): (action: () => void, delay: number) => () => void {
+export function useDelay(): (action: () => void, delay: number) => () => void {
   const timeout = useRef(0);
 
   return useCallback((action: () => void, delay: number) => {
@@ -18,8 +18,8 @@ export function useDefer(): (action: () => void, delay: number) => () => void {
 /**
  * Hooks for side effects that are executed non-immediately.
  */
-export function useDeferredEffect(action: () => void, delay: number, deps: DependencyList): void {
-  const defer = useDefer();
+export function useDelayedEffect(action: () => void, delay: number, deps: DependencyList): void {
+  const defer = useDelay();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => defer(action, delay), [defer, delay, ...deps]);
 }
@@ -27,9 +27,8 @@ export function useDeferredEffect(action: () => void, delay: number, deps: Depen
 /**
  * Hooks that returns input with a delay.
  */
-export function useDeferredValue<T>(value: T, delay: number): T {
+export function useDelayedValue<T>(value: T, delay: number): T {
   const [deferredValue, setDeferredValue] = useState(value);
-  const defer = useDefer();
-  useEffect(() => defer(() => setDeferredValue(value), delay), [defer, delay, value]);
+  useDelayedEffect(() => setDeferredValue(value), delay, [value]);
   return deferredValue;
 }

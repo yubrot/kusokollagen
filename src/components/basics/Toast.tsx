@@ -1,5 +1,5 @@
 import Icon20 from './Icon20';
-import { useDeferredEffect } from './hooks/defer';
+import { useDelayedEffect } from './hooks/delay';
 import React, { useState } from 'react';
 
 export type Severity = 'error' | 'warn' | 'info' | 'success';
@@ -19,8 +19,8 @@ const itemClassNames: { [K in Severity]: string } = {
 
 export default function Toast({ severity, message, resolve }: Props): React.ReactElement {
   const [show, setShow] = useState(false);
-  useDeferredEffect(() => setShow(true), 50, []);
-  useDeferredEffect(resolve, 8000, [resolve]);
+  useDelayedEffect(() => setShow(true), 50, []);
+  useDelayedEffect(resolve, 8000, [resolve]);
 
   const transition = show
     ? 'translate-y-0 scale-100 ease-out opacity-100'

@@ -1,5 +1,5 @@
 import Icon20, { IconName } from './Icon20';
-import { useDeferredEffect } from './hooks/defer';
+import { useDelayedEffect } from './hooks/delay';
 import { useState } from 'react';
 
 export interface Props {
@@ -28,7 +28,7 @@ export default function Confirm({
   declineClassName,
 }: Props): React.ReactElement {
   const [show, setShow] = useState(false);
-  useDeferredEffect(() => setShow(true), 50, []);
+  useDelayedEffect(() => setShow(true), 50, []);
   acceptClassName ??= '';
   declineClassName ??= '';
 

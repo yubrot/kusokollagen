@@ -2,7 +2,7 @@ import Icon24 from './basics/Icon24';
 import LoadingSpinner from './basics/LoadingSpinner';
 import SearchInputField from './basics/SearchInputField';
 import UserIcon from './basics/UserIcon';
-import { useDeferredValue } from './basics/hooks/defer';
+import { useDelayedValue } from './basics/hooks/delay';
 import { useState } from 'react';
 
 export interface Props {
@@ -30,7 +30,7 @@ export default function ApplicationHeader({
   userMenu,
 }: Props): React.ReactElement {
   const [showDropdown, setShowDropdown] = useState(false);
-  const actualShowDropdown = useDeferredValue(showDropdown, 0);
+  const actualShowDropdown = useDelayedValue(showDropdown, 0);
 
   return (
     <div className="relative z-30 bg-gradient-to-r from-bluegray-800 to-bluegray-700 text-bluegray-200 shadow-md">

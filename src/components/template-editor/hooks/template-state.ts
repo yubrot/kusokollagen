@@ -2,7 +2,7 @@ import CommitLog from '../models/commit-log';
 import type { Label } from '../models/label';
 import type { Accessibility, Template } from '../models/template';
 import { TemplateImage, useTemplateImage } from './template-image';
-import { useDeferredEffect } from '../../basics/hooks/defer';
+import { useDelayedEffect } from '../../basics/hooks/delay';
 import { useCallback, useEffect, useState } from 'react';
 
 export interface TemplateState {
@@ -91,7 +91,7 @@ export function useTemplateState(source: Template): TemplateState {
   }, [currentImage.ctx]);
 
   // `stage` are automatically committed after 1000ms
-  useDeferredEffect(commitChanges, 1000, [stage, commitChanges]);
+  useDelayedEffect(commitChanges, 1000, [stage, commitChanges]);
 
   const canUndo = log.hasPrev || !!stage;
   const canRedo = log.hasNext;

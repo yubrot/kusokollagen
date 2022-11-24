@@ -1,7 +1,7 @@
 import { Label } from '../models/label';
 import Icon20 from '../../basics/Icon20';
 import Slider from '../../basics/Slider';
-import { useDeferredValue } from '../../basics/hooks/defer';
+import { useDelayedValue } from '../../basics/hooks/delay';
 import ColorPalette from './ColorPalette';
 import { useEffect, useRef, useState } from 'react';
 
@@ -58,7 +58,7 @@ export function LabelOptions({
   colors,
 }: LabelOptionsProps): React.ReactElement {
   const [showDropdown, setShowDropdown] = useState(false);
-  const actualShowDropdown = useDeferredValue(showDropdown, 0);
+  const actualShowDropdown = useDelayedValue(showDropdown, 0);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {

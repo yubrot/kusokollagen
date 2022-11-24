@@ -1,7 +1,7 @@
 import type { Label } from '../models/label';
 import type { Rect, RectMode } from '../models/rect';
 import type { TemplateImage } from '../hooks/template-image';
-import { MouseDragState, useMouse } from '../../common/hooks/mouse';
+import { MouseDragState, useMouse } from '../../basics/hooks/mouse';
 import CroppingRect from './canvas-screen/CroppingRect';
 import FloatingImage from './canvas-screen/FloatingImage';
 import LabelPreview from './canvas-screen/LabelPreview';

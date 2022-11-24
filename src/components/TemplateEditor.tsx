@@ -1,8 +1,8 @@
 import type { Template } from './template-editor/models/template';
 import * as template from './template-editor/models/template';
-import { toast } from './common/Toast';
-import { useDetach } from './common/hooks/orphan';
-import { useWindowSize } from './common/hooks/window-size';
+import { toast } from './basics/Toast';
+import { useDetach } from './basics/hooks/orphan';
+import { useWindowSize } from './basics/hooks/window-size';
 import CanvasWindow from './template-editor/CanvasWindow';
 import ControlPanel from './template-editor/ControlPanel';
 import { usePalette } from './template-editor/hooks/palette';
@@ -10,7 +10,7 @@ import { useTemplateSaver } from './template-editor/hooks/template-saver';
 import { useTemplateState } from './template-editor/hooks/template-state';
 import { useToolBox } from './template-editor/hooks/tool/tool-box';
 import { useCallback, useState } from 'react';
-import { progress } from './common/Progress';
+import { progress } from './basics/Progress';
 
 export interface Props {
   source: Template;

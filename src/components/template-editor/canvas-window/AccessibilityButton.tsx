@@ -1,5 +1,5 @@
 import type { Accessibility } from '../models/template';
-import Icon20 from '../../common/Icon20';
+import Icon20 from '../../basics/Icon20';
 
 export interface Props {
   value: Accessibility;

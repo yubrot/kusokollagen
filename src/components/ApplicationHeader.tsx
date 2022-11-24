@@ -1,8 +1,8 @@
-import Icon24 from './common/Icon24';
-import LoadingSpinner from './common/LoadingSpinner';
-import SearchInputField from './common/SearchInputField';
-import UserIcon from './common/UserIcon';
-import { useDeferredValue } from './common/hooks/defer';
+import Icon24 from './basics/Icon24';
+import LoadingSpinner from './basics/LoadingSpinner';
+import SearchInputField from './basics/SearchInputField';
+import UserIcon from './basics/UserIcon';
+import { useDeferredValue } from './basics/hooks/defer';
 import { useState } from 'react';
 
 export interface Props {

@@ -2,7 +2,7 @@ import CommitLog from '../models/commit-log';
 import type { Label } from '../models/label';
 import type { Accessibility, Template } from '../models/template';
 import { TemplateImage, useTemplateImage } from './template-image';
-import { useDeferredEffect } from '../../common/hooks/defer';
+import { useDeferredEffect } from '../../basics/hooks/defer';
 import { useCallback, useEffect, useState } from 'react';
 
 export interface TemplateState {

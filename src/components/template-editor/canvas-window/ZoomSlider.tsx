@@ -1,5 +1,5 @@
-import Icon24 from '../../common/Icon24';
-import Slider from '../../common/Slider';
+import Icon24 from '../../basics/Icon24';
+import Slider from '../../basics/Slider';
 
 export interface Props {
   scale: number;

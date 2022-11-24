@@ -1,4 +1,4 @@
-import type { MouseDragState } from '../../../common/hooks/mouse';
+import type { MouseDragState } from '../../../basics/hooks/mouse';
 
 export interface Tool<Name> {
   name: Name;

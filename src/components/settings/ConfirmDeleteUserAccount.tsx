@@ -1,4 +1,4 @@
-import Confirm from '../common/Confirm';
+import Confirm from '../basics/Confirm';
 
 export interface Props {
   resolve(value: boolean): void;

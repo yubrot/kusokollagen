@@ -1,5 +1,5 @@
 import type { Rect, RectMode } from '../../models/rect';
-import Image from '../../../common/Image';
+import Image from '../../../basics/Image';
 
 export interface Props {
   rect: Rect;

@@ -1,6 +1,6 @@
 import Component, { userMenuItem } from '../components/ApplicationHeader';
-import { progress } from '../components/common/Progress';
-import { useDetach } from '../components/common/hooks/orphan';
+import { progress } from '../components/basics/Progress';
+import { useDetach } from '../components/basics/hooks/orphan';
 import { useLoadingState } from './hooks/loading-state';
 import { signIn, signOut, useSession } from 'next-auth/react';
 import { useRouter } from 'next/router';

@@ -1,4 +1,4 @@
-import Icon24 from '../common/Icon24';
+import Icon24 from '../basics/Icon24';
 import ColorPalette, { Props as ColorProps } from './control-panel/ColorPalette';
 import ToolBox, { Props as ToolProps } from './control-panel/ToolBox';
 

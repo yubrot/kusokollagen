@@ -1,6 +1,6 @@
 import type { Accessibility } from './models/template';
-import Icon24 from '../common/Icon24';
-import { useDetach } from '../common/hooks/orphan';
+import Icon24 from '../basics/Icon24';
+import { useDetach } from '../basics/hooks/orphan';
 import AccessibilityButton from './canvas-window/AccessibilityButton';
 import CanvasScreen, { Props as ScreenProps } from './canvas-window/CanvasScreen';
 import ConfirmDeleteTemplate from './canvas-window/ConfirmDeleteTemplate';

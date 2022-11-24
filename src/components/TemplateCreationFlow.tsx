@@ -1,10 +1,10 @@
-import Icon24 from './common/Icon24';
-import Image from './common/Image';
-import Pager from './common/Pager';
-import { progress } from './common/Progress';
-import { toast } from './common/Toast';
-import { useFileDrop, useFilePaste } from './common/hooks/file';
-import { useDetach } from './common/hooks/orphan';
+import Icon24 from './basics/Icon24';
+import Image from './basics/Image';
+import Pager from './basics/Pager';
+import { progress } from './basics/Progress';
+import { toast } from './basics/Toast';
+import { useFileDrop, useFilePaste } from './basics/hooks/file';
+import { useDetach } from './basics/hooks/orphan';
 import { FormEvent, useCallback, useState } from 'react';
 
 export interface Props {

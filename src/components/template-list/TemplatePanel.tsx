@@ -1,5 +1,5 @@
-import Icon24 from '../common/Icon24';
-import Image from '../common/Image';
+import Icon24 from '../basics/Icon24';
+import Image from '../basics/Image';
 
 export interface Props {
   name: string;

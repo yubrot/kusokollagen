@@ -1,7 +1,7 @@
 import { Label } from '../models/label';
-import Icon20 from '../../common/Icon20';
-import Slider from '../../common/Slider';
-import { useDeferredValue } from '../../common/hooks/defer';
+import Icon20 from '../../basics/Icon20';
+import Slider from '../../basics/Slider';
+import { useDeferredValue } from '../../basics/hooks/defer';
 import ColorPalette from './ColorPalette';
 import { useEffect, useRef, useState } from 'react';
 

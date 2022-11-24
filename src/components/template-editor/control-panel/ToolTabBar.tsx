@@ -1,4 +1,4 @@
-import Icon20, { IconName } from '../../common/Icon20';
+import Icon20, { IconName } from '../../basics/Icon20';
 import type { ToolName } from '../hooks/tool/tool-box';
 
 export interface Props {

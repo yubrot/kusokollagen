@@ -2,7 +2,7 @@ import Component, { Props as ComponentProps } from '../components/TemplateList';
 import { useRouter } from 'next/router';
 import { TemplateFilter, useTemplates } from './hooks/api';
 import { useState } from 'react';
-import type { IconName } from '../components/common/Icon24';
+import type { IconName } from '../components/basics/Icon24';
 
 export interface Props {
   mode: ComponentProps['mode'];

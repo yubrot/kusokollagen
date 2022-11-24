@@ -1,4 +1,4 @@
-import Icon24, { IconName } from '../common/Icon24';
+import Icon24, { IconName } from '../basics/Icon24';
 
 export interface Props {
   name: string;

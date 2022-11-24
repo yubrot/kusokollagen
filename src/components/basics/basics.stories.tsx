@@ -77,7 +77,7 @@ export const Icons = () => (
   </div>
 );
 
-export function Components(): React.ReactElement {
+export function Parts(): React.ReactElement {
   const [checkOptionA, setCheckOptionA] = useState(false);
   const [checkOptionB, setCheckOptionB] = useState(false);
   const [sliderA, setSliderA] = useState(10);

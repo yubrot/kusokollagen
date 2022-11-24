@@ -7,9 +7,9 @@ import SignInRequiredCardImpl from './SignInRequiredCard';
 import UserSettingsImpl from './UserSettings';
 import TemplateEditorImpl from './TemplateEditor';
 import ApplicationHeaderImpl from './ApplicationHeader';
-import Slider from './common/Slider';
-import { useImageBitmap } from './common/hooks/image-bitmap';
-import { useLoader } from './common/hooks/loader';
+import Slider from './basics/Slider';
+import { useImageBitmap } from './basics/hooks/image-bitmap';
+import { useLoader } from './basics/hooks/loader';
 import { useState } from 'react';
 
 export function ApplicationHeader(): React.ReactElement {

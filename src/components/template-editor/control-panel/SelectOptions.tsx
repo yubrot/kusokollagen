@@ -1,6 +1,6 @@
 import type { RectMode } from '../models/rect';
 import type { Mode } from '../hooks/tool/select';
-import CheckOption from '../../common/CheckOption';
+import CheckOption from '../../basics/CheckOption';
 
 export interface Props {
   selectedColor: string;

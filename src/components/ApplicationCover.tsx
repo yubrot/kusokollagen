@@ -1,4 +1,4 @@
-import Icon24 from './common/Icon24';
+import Icon24 from './basics/Icon24';
 
 export interface Props {}
 

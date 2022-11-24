@@ -1,6 +1,6 @@
 import '../globals.css';
 import ApplicationFrame from '../application/ApplicationFrame';
-import { OrphanProvider, OrphanContainer } from '../components/common/hooks/orphan';
+import { OrphanProvider, OrphanContainer } from '../components/basics/hooks/orphan';
 import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
 import Head from 'next/head';

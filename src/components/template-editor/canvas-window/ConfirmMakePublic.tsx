@@ -1,5 +1,5 @@
-import Confirm from '../../common/Confirm';
-import Icon24 from '../../common/Icon24';
+import Confirm from '../../basics/Confirm';
+import Icon24 from '../../basics/Icon24';
 
 export interface Props {
   resolve(value: boolean): void;

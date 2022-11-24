@@ -1,5 +1,5 @@
 import ApplicationFooter from '../components/ApplicationFooter';
-import LoadingSpinner from '../components/common/LoadingSpinner';
+import LoadingSpinner from '../components/basics/LoadingSpinner';
 import ApplicationHeader from './ApplicationHeader';
 import { useSession } from 'next-auth/react';
 

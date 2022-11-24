@@ -1,5 +1,5 @@
-import CheckOption from '../../common/CheckOption';
-import Slider from '../../common/Slider';
+import CheckOption from '../../basics/CheckOption';
+import Slider from '../../basics/Slider';
 import type { Mode } from '../hooks/tool/pen';
 
 export interface Props {

@@ -1,7 +1,7 @@
 import { useSession } from 'next-auth/react';
 import { useCallback } from 'react';
-import { useImageBitmap } from '../components/common/hooks/image-bitmap';
-import LoadingSpinner from '../components/common/LoadingSpinner';
+import { useImageBitmap } from '../components/basics/hooks/image-bitmap';
+import LoadingSpinner from '../components/basics/LoadingSpinner';
 import type { Template } from '../components/template-editor/models/template';
 import { getBlob } from '../components/template-editor/models/canvas-util';
 import Component from '../components/TemplateEditor';

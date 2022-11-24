@@ -1,5 +1,5 @@
-import LoadingSpinner from './common/LoadingSpinner';
-import { useResponsive } from './common/hooks/responsive';
+import LoadingSpinner from './basics/LoadingSpinner';
+import { useResponsive } from './basics/hooks/responsive';
 import TemplateListEmpty from './template-list/TemplateListEmpty';
 import TemplateListHeader, { Props as HeaderProps } from './template-list/TemplateListHeader';
 import TemplatePanel from './template-list/TemplatePanel';

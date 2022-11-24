@@ -1,7 +1,7 @@
-import Icon24 from './common/Icon24';
-import { progress } from './common/Progress';
-import { toast } from './common/Toast';
-import { useDetach } from './common/hooks/orphan';
+import Icon24 from './basics/Icon24';
+import { progress } from './basics/Progress';
+import { toast } from './basics/Toast';
+import { useDetach } from './basics/hooks/orphan';
 import ConfirmDeleteUserAccount from './settings/ConfirmDeleteUserAccount';
 import { useCallback } from 'react';
 

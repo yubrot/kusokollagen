@@ -1,4 +1,4 @@
-import { OrphanProvider, OrphanContainer } from '../src/components/common/hooks/orphan';
+import { OrphanProvider, OrphanContainer } from '../src/components/basics/hooks/orphan';
 import '../src/globals.css';
 import './styles.css';
 import { GlobalProvider } from '@ladle/react';

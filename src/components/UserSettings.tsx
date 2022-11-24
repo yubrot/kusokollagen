@@ -2,7 +2,7 @@ import Icon24 from './basics/Icon24';
 import { progress } from './basics/Progress';
 import { toast } from './basics/Toast';
 import { useDetach } from './basics/hooks/orphan';
-import ConfirmDeleteUserAccount from './settings/ConfirmDeleteUserAccount';
+import ConfirmDeleteUserAccount from './user-settings/ConfirmDeleteUserAccount';
 import { useCallback } from 'react';
 
 export interface Props {
@@ -32,7 +32,7 @@ export default function UserSettings({ deleteUserAccount }: Props): React.ReactE
     <div className="container-sm my-12 card">
       <div className="heading lined mx-4 space-x-2">
         <Icon24 name="user-circle" className="w-6 h-6" />
-        <div>Settings</div>
+        <div>User Settings</div>
       </div>
       <div className="p-4 flex justify-center">
         <button

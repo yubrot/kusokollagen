@@ -5,7 +5,7 @@
 
 # About
 
-Kusokollagen is a web application to quickly generate "Kusokora" images. You can create and manage "Kusokora" templates and quickly generate "Kusokora" images by replacing the label strings in the template.
+Kusokollagen is a web application to quickly generate "Kusokora" images. You can create and manage "Kusokora" templates, and quickly generate "Kusokora" images by replacing label strings placed in the template.
 
 Kusokollagen is built with [Next.js](https://nextjs.org/), [Prisma](https://www.prisma.io/), and [GraphQL](https://graphql.org/), and is designed to run primarily on serverless platforms.
 

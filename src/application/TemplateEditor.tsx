@@ -14,7 +14,7 @@ export interface Props {
 
 export default function TemplateEditor({ id }: Props): React.ReactElement {
   const router = useRouter();
-  const { data: session } = useSession();
+  const session = useSession();
   const template = useTemplate(id);
   const templateImage = useImageBitmap(template.data?.image ?? null);
   const updateTemplate = useUpdateTemplate();
@@ -55,7 +55,7 @@ export default function TemplateEditor({ id }: Props): React.ReactElement {
 
   const { name, owned, accessibility, labels } = template.data;
   const image = templateImage.data;
-  const canMakePublic = session?.user.role == 'ADMIN';
+  const canMakePublic = session?.data?.user.role == 'ADMIN';
   const onSave = owned ? handleSave : undefined;
   const onDelete = owned ? handleDelete : undefined;
 

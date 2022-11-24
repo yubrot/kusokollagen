@@ -1,12 +1,11 @@
 import storage from './google-cloud/storage';
 import prisma from './prisma/client';
 import { SizeLimitter } from './stream/size-limitter';
-import { pipeline } from './stream/promises';
-import type { ReadStream } from 'fs';
+import { pipeline } from 'stream/promises';
+import type { ReadStream } from 'fs-capacitor';
 import crypto from 'crypto';
 
 export interface File {
-  // compatible with graphql-upload/FileUpload
   mimetype: string;
   createReadStream(): ReadStream;
 }
@@ -36,6 +35,10 @@ export interface TemplateContent {
   labels: TemplateLabel[];
 }
 
+const INITIAL_TEMPLATE_CONTENT: TemplateContent = {
+  labels: [],
+};
+
 export interface TemplateLabel {
   size: number;
   color: string;
@@ -48,6 +51,8 @@ export interface TemplateLabel {
 
 // use cases
 
+const TEMPLATES_FETCH_STEP = 50;
+
 export interface Context {
   operator(): Promise<Operator | null>;
   inputError(message: string): never;
@@ -58,19 +63,18 @@ export async function deleteUser(id: string, ctx: Context): Promise<void> {
   const operator = await ctx.operator();
   if (!operator || operator.id != id) return ctx.forbiddenError('User mismatch');
 
-  const takeSize = 50;
   let cursor = undefined;
   while (true) {
     const ts = await prisma.template.findMany({
       where: { ownerId: operator.id },
-      take: takeSize,
+      take: TEMPLATES_FETCH_STEP,
       cursor,
     });
 
     await prisma.template.deleteMany({ where: { id: { in: ts.map(t => t.id) } } });
     for (const t of ts) await deleteTemplateImage(t.image);
 
-    if (ts.length != takeSize) break;
+    if (ts.length != TEMPLATES_FETCH_STEP) break;
   }
 
   await prisma.user.deleteMany({ where: { id } });
@@ -94,8 +98,10 @@ export async function getTemplates(
   filter: TemplatesFilter | null,
   ctx: Context
 ): Promise<Template[]> {
-  if (num < 0) return [];
-  if (50 < num) return ctx.inputError('Cannot get more than 50 templates at a time');
+  if (num <= 0) return [];
+  if (TEMPLATES_FETCH_STEP < num) {
+    return ctx.inputError(`Cannot get more than ${TEMPLATES_FETCH_STEP} templates at a time`);
+  }
 
   const operator = await ctx.operator();
 
@@ -137,7 +143,7 @@ export async function createTemplate(name: string, imageFile: File, ctx: Context
         name,
         accessibility: 'PRIVATE',
         image,
-        content: initialTemplateContent as any, // TemplateContent -> JsonValue
+        content: INITIAL_TEMPLATE_CONTENT as any, // TemplateContent -> JsonValue
         owner: { connect: { id: operator.id } },
       },
     });
@@ -147,10 +153,6 @@ export async function createTemplate(name: string, imageFile: File, ctx: Context
     throw e;
   }
 }
-
-const initialTemplateContent: TemplateContent = {
-  labels: [],
-};
 
 export interface TemplateChange {
   name?: string | null;
@@ -175,7 +177,7 @@ export async function updateTemplate(
   if (!t) return ctx.inputError(`Template ${id} not found`);
   if (t.ownerId != operator.id) return ctx.forbiddenError('User mismatch');
   if (accessibility && operator.role != 'ADMIN') {
-    return ctx.forbiddenError('Only OWNER can change the template accessibility');
+    return ctx.forbiddenError('Only ADMIN can change the template accessibility');
   }
 
   // Create a template image if updated

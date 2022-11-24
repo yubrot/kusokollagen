@@ -2,7 +2,7 @@ import typeDefs from '../../graphql/schema.graphql';
 import * as sig from '../../graphql/resolvers-signatures';
 import * as backend from '../../backend';
 import { ApolloServer, ForbiddenError, UserInputError } from 'apollo-server-micro';
-import { processRequest } from 'graphql-upload';
+import processRequest from 'graphql-upload/processRequest.mjs';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getSession } from 'next-auth/react';
 

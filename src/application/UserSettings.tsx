@@ -20,7 +20,7 @@ export default function UserSettings(_: Props): React.ReactElement {
     // Since current (v4.3) next-auth does not support a way to enforce session validation, the page must be reloaded.
     // We believe that future next-auth will support user deletion functionality.
     router.reload();
-  }, []);
+  }, [router, deleteUser]);
 
   return <Component deleteUserAccount={deleteSignedInUser} />;
 }

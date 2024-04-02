@@ -1,7 +1,4 @@
-[![](./screenshots/editor.png)](https://kusokollagen.vercel.app/t/cl2ps78w4004609l3zgf2lfer)
-
-- [Live Demo](https://kusokollagen.vercel.app)
-- [Random Notes (Japanese)](https://yubrot.github.io/2022/05/kusokollagen/)
+![](./screenshots/editor.png)
 
 # About
 

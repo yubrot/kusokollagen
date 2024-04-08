@@ -1,7 +1,7 @@
 {
   "name": "kusokollagen",
   "version": "0.1.0",
-  "private": true,
+  "description": "A web application to quickly generate Kusokora images",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yubrot/kusokollagen.git"
@@ -31,9 +31,19 @@
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "autoprefixer": "^10.4.19",
+    "css-loader": "^7.0.0",
+    "css-minimizer-webpack-plugin": "^6.0.0",
     "eslint": "^9.0.0",
+    "mini-css-extract-plugin": "^2.8.1",
     "postcss": "^8.4.38",
+    "postcss-loader": "^8.1.1",
+    "prettier": "^3.2.5",
     "tailwindcss": "^3.4.3",
-    "typescript": "5.4.4"
+    "ts-loader": "^9.5.1",
+    "typescript": "5.4.4",
+    "typescript-eslint": "^7.5.0",
+    "webpack": "^5.91.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.0.4"
   }
 }

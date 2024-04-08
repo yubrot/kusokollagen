@@ -2,7 +2,7 @@
 
 @font-face {
   font-family: 'GenEiAntique';
-  src: url('/GenEiAntiqueNv5-M.ttf') format('truetype');
+  src: url('./assets/GenEiAntiqueNv5-M.ttf') format('truetype');
 }
 
 body {
@@ -10,6 +10,8 @@ body {
 }
 
 @tailwind components;
+
+/* TODO: Do not use components as possible */
 
 .container-lg {
   @apply 2xl:container 2xl:mx-auto;

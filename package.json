@@ -9,18 +9,9 @@
   "author": "yubrot",
   "license": "BSD-3-Clause",
   "scripts": {
-    "dev": "npm run dev:graphql & npm run dev:next",
-    "dev:graphql": "graphql-codegen --watch",
-    "dev:next": "next dev",
-    "build": "npm run prisma:generate && npm run build:graphql && npm run build:next",
-    "build:graphql": "graphql-codegen",
-    "build:next": "next build",
-    "start": "next start",
-    "lint": "next lint",
-    "ladle": "ladle serve",
-    "prisma:push": "dotenv -e .env.local -- prisma db push --schema src/backend/prisma/schema.prisma",
-    "prisma:generate": "dotenv -e .env.local -- prisma generate --schema src/backend/prisma/schema.prisma",
-    "prisma:studio": "dotenv -e .env.local -- prisma studio --schema src/backend/prisma/schema.prisma"
+    "dev": "webpack serve --host 0.0.0.0",
+    "build": "webpack --mode production",
+    "ladle": "ladle serve"
   },
   "dependencies": {
     "react": "^18.2.0",

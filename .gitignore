@@ -8,12 +8,10 @@
 # testing
 /coverage
 
-# next.js
-/.next/
-/out/
-
 # production
-/build
+/dist/*
+!/dist/index.html
+!/dist/favicon.ico
 
 # misc
 .DS_Store
@@ -28,12 +26,5 @@ yarn-error.log*
 # local env files
 .env*.local
 
-# vercel
-.vercel
-
 # typescript
 *.tsbuildinfo
-
-# graphql-codegen
-src/graphql/request-sdk.ts
-src/graphql/resolvers-signatures.ts

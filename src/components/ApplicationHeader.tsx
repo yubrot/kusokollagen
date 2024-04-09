@@ -42,43 +42,47 @@ export default function ApplicationHeader({
           <div className="w-6 h-6">{isLoading && <LoadingSpinner />}</div>
         </h1>
 
-        <SearchInputField
-          placeholder="Search templates..."
-          className="text-lg flex-1"
-          onSubmit={search}
-        />
+        {search && (
+          <SearchInputField
+            placeholder="Search templates..."
+            className="text-lg flex-1"
+            onSubmit={search}
+          />
+        )}
 
-        <div className="relative flex-1">
-          <div className="flex justify-end">
-            <button
-              className={`button hover:text-white flex items-center space-x-2 ${
-                showDropdown ? 'overlay' : ''
-              }`}
-              onClick={() => setShowDropdown(value => !value)}
+        {userImageUrl && (
+          <div className="relative flex-1">
+            <div className="flex justify-end">
+              <button
+                className={`button hover:text-white flex items-center space-x-2 ${
+                  showDropdown ? 'overlay' : ''
+                }`}
+                onClick={() => setShowDropdown(value => !value)}
+              >
+                <UserIcon imageUrl={userImageUrl} className="w-10 h-10" />
+                <Icon24 name="chevron-down" className="w-5 h-5" />
+              </button>
+            </div>
+
+            <div
+              className={`absolute z-20 right-0 mt-4 w-56 menu fade-${showDropdown}-${actualShowDropdown}`}
             >
-              <UserIcon imageUrl={userImageUrl} className="w-10 h-10" />
-              <Icon24 name="chevron-down" className="w-5 h-5" />
-            </button>
+              {userMenu &&
+                userMenu.map(({ text, onClick }) => (
+                  <button
+                    key={text}
+                    className="button menu-item"
+                    onClick={() => {
+                      onClick?.();
+                      setShowDropdown(false);
+                    }}
+                  >
+                    {text}
+                  </button>
+                ))}
+            </div>
           </div>
-
-          <div
-            className={`absolute z-20 right-0 mt-4 w-56 menu fade-${showDropdown}-${actualShowDropdown}`}
-          >
-            {userMenu &&
-              userMenu.map(({ text, onClick }) => (
-                <button
-                  key={text}
-                  className="button menu-item"
-                  onClick={() => {
-                    onClick?.();
-                    setShowDropdown(false);
-                  }}
-                >
-                  {text}
-                </button>
-              ))}
-          </div>
-        </div>
+        )}
       </header>
     </div>
   );

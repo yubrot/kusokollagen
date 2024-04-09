@@ -1,10 +1,7 @@
-import type { Accessibility } from './models/template';
 import Icon24 from '../basics/Icon24';
 import { useDetach } from '../basics/hooks/orphan';
-import AccessibilityButton from './canvas-window/AccessibilityButton';
 import CanvasScreen, { Props as ScreenProps } from './canvas-window/CanvasScreen';
 import ConfirmDeleteTemplate from './canvas-window/ConfirmDeleteTemplate';
-import ConfirmMakePublic from './canvas-window/ConfirmMakePublic';
 import DeleteButton from './canvas-window/DeleteButton';
 import UndoRedo from './canvas-window/UndoRedo';
 import ZoomSlider from './canvas-window/ZoomSlider';
@@ -20,10 +17,6 @@ export interface Props {
 
   canDelete?: boolean;
   onDelete?(): void;
-
-  canMakePublic?: boolean;
-  accessibility: Accessibility;
-  setAccessibility?(accessibility: Accessibility): void;
 
   canUndo?: boolean;
   canRedo?: boolean;
@@ -45,10 +38,6 @@ export default function CanvasWindow({
   canDelete,
   onDelete,
 
-  canMakePublic,
-  accessibility,
-  setAccessibility,
-
   canUndo,
   canRedo,
   onUndo,
@@ -58,18 +47,6 @@ export default function CanvasWindow({
   className,
 }: Props): React.ReactElement {
   const detach = useDetach();
-
-  const toggleAccessibility = useCallback(async () => {
-    switch (accessibility) {
-      case 'PUBLIC':
-        setAccessibility?.('PRIVATE');
-        break;
-      case 'PRIVATE':
-        const sure = await detach(resolve => <ConfirmMakePublic resolve={resolve} />);
-        if (sure) setAccessibility?.('PUBLIC');
-        break;
-    }
-  }, [accessibility, detach, setAccessibility]);
 
   const deleteWithConfirmation = useCallback(async () => {
     const sure = await detach(resolve => <ConfirmDeleteTemplate resolve={resolve} />);
@@ -105,11 +82,6 @@ export default function CanvasWindow({
 
       <div className="flex items-stretch">
         {canDelete && <DeleteButton onDelete={deleteWithConfirmation} />}
-        <AccessibilityButton
-          value={accessibility}
-          onClick={toggleAccessibility}
-          disabled={!canMakePublic}
-        />
         <ZoomSlider
           scale={screen.scale.value}
           scaleRange={[screen.scale.min, screen.scale.max, screen.scale.step]}

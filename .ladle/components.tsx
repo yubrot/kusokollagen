@@ -1,7 +1,7 @@
 import { OrphanProvider, OrphanContainer } from '../src/components/basics/hooks/orphan';
-import '../src/globals.css';
+import '../src/index.css';
 import './styles.css';
-import { GlobalProvider } from '@ladle/react';
+import type { GlobalProvider } from '@ladle/react';
 import React from 'react';
 
 export const Provider: GlobalProvider = ({ children }) => (

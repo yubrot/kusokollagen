@@ -1,6 +1,6 @@
 import CommitLog from '../models/commit-log';
 import type { Label } from '../models/label';
-import type { Accessibility, Template } from '../models/template';
+import type { Template } from '../models/template';
 import { TemplateImage, useTemplateImage } from './template-image';
 import { useDelayedEffect } from '../../basics/hooks/delay';
 import { useCallback, useEffect, useState } from 'react';
@@ -10,7 +10,6 @@ export interface TemplateState {
   staged: Template;
 
   changeName(name: string): void;
-  changeAccessibility(accessibility: Accessibility): void;
   changeLabels(labels: Label[]): void;
   stageImageChange(): Promise<void>;
   commitChanges(): void;
@@ -24,7 +23,6 @@ export interface TemplateState {
 export function useTemplateState(source: Template): TemplateState {
   // (1) Current state
   const [currentName, setCurrentName] = useState(source.name);
-  const [currentAccessibility, setCurrentAccessibility] = useState(source.accessibility);
   const [currentLabels, setCurrentLabels] = useState(source.labels);
   const currentImage = useTemplateImage(source.image);
   const [currentImageSource, setCurrentImageSource] = useState<ImageBitmap | null>(source.image);
@@ -40,14 +38,12 @@ export function useTemplateState(source: Template): TemplateState {
 
   const current = {
     name: currentName,
-    accessibility: currentAccessibility,
     labels: currentLabels,
     image: currentImage,
   };
 
   const setCurrent = useCallback((commit: Template) => {
     setCurrentName(commit.name);
-    setCurrentAccessibility(commit.accessibility);
     setCurrentLabels(commit.labels);
     setCurrentImageSource(commit.image);
   }, []);
@@ -67,15 +63,10 @@ export function useTemplateState(source: Template): TemplateState {
     });
   }, []);
 
-  // name, accessibility, and labels changes are always staged immediately
+  // name, and labels changes are always staged immediately
   const changeName = useCallback((name: string) => {
     setCurrentName(name);
     setHistory(({ stage, log }) => ({ stage: { ...stage, name }, log }));
-  }, []);
-
-  const changeAccessibility = useCallback((accessibility: Accessibility) => {
-    setCurrentAccessibility(accessibility);
-    setHistory(({ stage, log }) => ({ stage: { ...stage, accessibility }, log }));
   }, []);
 
   const changeLabels = useCallback((labels: Label[]) => {
@@ -118,7 +109,6 @@ export function useTemplateState(source: Template): TemplateState {
     staged: { ...log.current, ...stage },
 
     changeName,
-    changeAccessibility,
     changeLabels,
     stageImageChange,
     commitChanges,

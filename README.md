@@ -4,6 +4,8 @@
 
 Kusokollagen is a web application to quickly generate "Kusokora" images.
 
+I have deleted the backend implementation once. The implementation can be found in the [legacy-studio](/yubrot/kusokollagen/tree/legacy-studio) branch.
+
 # Resources
 
 - Icons

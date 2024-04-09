@@ -3,12 +3,9 @@ import Confirm from './Confirm';
 import Icon20, { IconName as Icon20Name } from './Icon20';
 import Icon24, { IconName as Icon24Name } from './Icon24';
 import LoadingSpinner from './LoadingSpinner';
-import Pager from './Pager';
 import { progress } from './Progress';
-import SearchInputField from './SearchInputField';
 import Slider from './Slider';
 import { Severity, toast } from './Toast';
-import UserIcon from './UserIcon';
 import { useDetach } from './hooks/orphan';
 import { useState } from 'react';
 
@@ -67,12 +64,6 @@ export const Icons = () => (
           <Icon24 name={name} className="w-8 h-8" />
         </div>
       ))}
-    </div>
-
-    <h1 className="heading lined">UserIcon</h1>
-    <div className="flex space-x-2">
-      <UserIcon className="w-12 h-12" imageUrl={null} />
-      <UserIcon className="w-12 h-12" imageUrl="https://picsum.photos/64" />
     </div>
   </div>
 );
@@ -144,27 +135,10 @@ export function Parts(): React.ReactElement {
           value={textFieldB}
           onChange={ev => setTextFieldB(ev.target.value)}
         />
-        <SearchInputField placeholder="search" />
       </div>
-
-      <h1 className="heading lined">Pager</h1>
-      <Pager currentPage={pagerA} setCurrentPage={setPagerA} showPrev showNext>
-        {['bg-white', 'bg-bluegray-100', 'bg-bluegray-200', 'bg-bluegray-300'].map(color => (
-          <div className={`${color} px-16 py-8 text-sm`} key={color}>
-            {color}
-          </div>
-        ))}
-      </Pager>
 
       <h1 className="heading lined">Card</h1>
       <div className="card">Card</div>
-
-      <h1 className="heading lined">Menu</h1>
-      <div className="menu">
-        <button className="button menu-item">Menu A</button>
-        <button className="button menu-item">Menu BBB</button>
-        <button className="button menu-item">Menu CCCCC</button>
-      </div>
     </div>
   );
 }

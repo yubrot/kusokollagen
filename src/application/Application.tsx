@@ -9,28 +9,29 @@ import { Template } from '../components/template-editor/models/template';
 
 export default function Application(): React.ReactElement {
   const detach = useDetach();
-  const [source, setSource] = useState<Template | null>(null);
-  const openEditor = useCallback(
+  const [template, setTemplate] = useState<Template | null>(null);
+
+  const createTemplate = useCallback(
     async (file: File) => {
       try {
         const image = await createImageBitmap(file);
-        setSource({ name: file.name, image, labels: [], accessibility: 'PRIVATE' });
+        setTemplate({ name: file.name, image, labels: [] });
       } catch (e) {
         detach(toast('error', `Failed to load image: ${e instanceof Error ? e.message : e}`));
       }
     },
-    [detach, setSource]
+    [detach, setTemplate]
   );
-  const deleteSource = useCallback(async () => setSource(null), [setSource]);
+  const deleteTemplate = useCallback(async () => setTemplate(null), [setTemplate]);
 
   return (
     <div className="absolute inset-0 flex flex-col">
       <ApplicationHeader />
       <div className="flex-grow my-8">
-        {source ? (
-          <TemplateEditor source={source} onDelete={deleteSource} />
+        {template ? (
+          <TemplateEditor source={template} onDelete={deleteTemplate} />
         ) : (
-          <UploadImageCard onUpload={openEditor} />
+          <UploadImageCard onUpload={createTemplate} />
         )}
       </div>
       <ApplicationFooter />

@@ -14,17 +14,11 @@ import { progress } from './basics/Progress';
 
 export interface Props {
   source: Template;
-  canMakePublic?: boolean;
   onSave?(diff: Partial<Template>): Promise<void>;
   onDelete?(): Promise<void>;
 }
 
-export default function TemplateEditor({
-  source,
-  canMakePublic,
-  onSave,
-  onDelete,
-}: Props): React.ReactElement {
+export default function TemplateEditor({ source, onSave, onDelete }: Props): React.ReactElement {
   const detach = useDetach();
 
   const palette = usePalette(() => source.labels.map(l => l.color));
@@ -48,26 +42,24 @@ export default function TemplateEditor({
     state.redo();
   }
 
-  const saveWithToast = useCallback(async () => {
+  const saveWithErrorHandling = useCallback(async () => {
     await currentTool.complete?.();
     try {
       await detach(progress(save(false)));
-      detach(toast('success', 'Template has been successuflly saved.'));
     } catch (e) {
       detach(toast('error', `Failed to save template: ${e instanceof Error ? e.message : e}`));
     }
   }, [currentTool, detach, save]);
 
-  const deleteWithToast = useCallback(async () => {
+  const deleteWithErrorHandling = useCallback(async () => {
     try {
       await detach(progress(onDelete!()));
-      detach(toast('success', 'Template has been successfully deleted.'));
     } catch (e) {
       detach(toast('error', `Failed to delete template: ${e instanceof Error ? e.message : e}`));
     }
   }, [detach, onDelete]);
 
-  async function renderAsImage(): Promise<void> {
+  async function renderAsImageWithErrorHandling(): Promise<void> {
     try {
       await template.render(state.staged);
     } catch (e) {
@@ -88,13 +80,10 @@ export default function TemplateEditor({
         name={state.current.name}
         onNameChange={state.changeName}
         canSave={!!onSave}
-        onSave={saveWithToast}
+        onSave={saveWithErrorHandling}
         hasDifference={hasDifference}
         canDelete={!!onDelete}
-        onDelete={deleteWithToast}
-        canMakePublic={canMakePublic}
-        accessibility={state.current.accessibility}
-        setAccessibility={state.changeAccessibility}
+        onDelete={deleteWithErrorHandling}
         canUndo={state.canUndo}
         canRedo={state.canRedo}
         onUndo={undo}
@@ -195,7 +184,7 @@ export default function TemplateEditor({
           crop: {},
           contentMaxHeight: max.height - 50,
         }}
-        onRenderAsImage={renderAsImage}
+        onRenderAsImage={renderAsImageWithErrorHandling}
         className="flex-grow max-w-md"
       />
     </div>

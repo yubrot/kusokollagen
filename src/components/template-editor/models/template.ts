@@ -3,17 +3,13 @@ import { Label, render as renderLabel } from './label';
 
 export interface Template<Image = ImageBitmap> {
   name: string;
-  accessibility: Accessibility;
   labels: Label[];
   image: Image;
 }
 
-export type Accessibility = 'PUBLIC' | 'PRIVATE';
-
 export function difference<T>(a: Template<T>, b: Template<T>): Partial<Template<T>> {
   const diff: Partial<Template<T>> = {};
   if (b.name != a.name) diff.name = b.name;
-  if (b.accessibility != a.accessibility) diff.accessibility = b.accessibility;
   if (b.labels != a.labels) diff.labels = b.labels;
   if (b.image != a.image) diff.image = b.image;
   return diff;

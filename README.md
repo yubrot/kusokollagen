@@ -1,5 +1,7 @@
 ![](./screenshots/editor.png)
 
+- [Live demo](https://yubrot.github.io/kusokollagen/)
+
 # About
 
 Kusokollagen is a web application to quickly generate "Kusokora" images.

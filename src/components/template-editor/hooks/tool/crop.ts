@@ -11,10 +11,10 @@ export interface Crop extends Tool<'crop'> {
 
 export interface Options {
   labels: label.Label[];
-  changeLabels(labels: label.Label[]): void;
+  changeLabels: (labels: label.Label[]) => void;
   image: TemplateImage;
-  stageImageChange(): Promise<void>;
-  commitChanges(): void;
+  stageImageChange: () => Promise<void>;
+  commitChanges: () => void;
 }
 
 export function useCrop({

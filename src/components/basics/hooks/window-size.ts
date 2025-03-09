@@ -14,9 +14,13 @@ export function useWindowSize(): WindowSize {
   const [size, setSize] = useState<WindowSize>(getWindowSize);
 
   useEffect(() => {
-    const update = () => setSize(getWindowSize());
+    const update = () => {
+      setSize(getWindowSize());
+    };
     window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
+    return () => {
+      window.removeEventListener('resize', update);
+    };
   }, []);
 
   return size;

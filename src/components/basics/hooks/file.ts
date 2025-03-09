@@ -6,7 +6,7 @@
 import { useState, useEffect, useRef, DependencyList } from 'react';
 
 export interface FileDrop {
-  ref(node: HTMLElement | null): void;
+  ref: (node: HTMLElement | null) => void;
   isDropping: boolean;
 }
 
@@ -62,6 +62,8 @@ export function useFilePaste(onPaste: (file: File) => void, deps: DependencyList
     };
 
     document.addEventListener('paste', handlePaste);
-    return () => document.removeEventListener('paste', handlePaste);
+    return () => {
+      document.removeEventListener('paste', handlePaste);
+    };
   }, deps); // eslint-disable-line react-hooks/exhaustive-deps
 }

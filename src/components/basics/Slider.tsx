@@ -1,9 +1,10 @@
+import clsx from 'clsx';
 import { useMouse } from './hooks/mouse';
 
 export interface Props {
   range: readonly [number, number, number];
   value: number;
-  onChange?(value: number): void;
+  onChange?: (value: number) => void;
   disabled?: boolean;
   className?: string;
 }
@@ -28,7 +29,7 @@ export default function Slider({
     },
   });
 
-  const left = ((value - min) / (max - min)) * 100 + '%';
+  const left = `${((value - min) / (max - min)) * 100}%`;
 
   return (
     <div className={className}>
@@ -39,15 +40,17 @@ export default function Slider({
       >
         <div
           style={{ height: '6px' }}
-          className={`flex-grow relative ${
-            disabled ? 'bg-bluegray-200' : 'bg-gradient-to-r from-bluegray-100 to-bluegray-400'
-          } rounded-sm shadow-sm`}
+          className={clsx(
+            'flex-grow relative rounded-sm shadow-sm',
+            disabled ? 'bg-slate-200' : 'bg-gradient-to-r from-slate-100 to-slate-400'
+          )}
         >
           <div
             style={{ left, width: '12px', height: '18px', marginLeft: '-6px', marginTop: '-6px' }}
-            className={`absolute box-border border ${
-              disabled ? 'border-bluegray-200' : 'border-bluegray-400'
-            } bg-gradient-to-b from-white to-bluegray-100 rounded-sm shadow-md`}
+            className={clsx(
+              'absolute box-border border bg-gradient-to-b from-white to-slate-100 rounded-sm shadow-md',
+              disabled ? 'border-slate-200' : 'border-slate-400'
+            )}
           />
         </div>
       </div>

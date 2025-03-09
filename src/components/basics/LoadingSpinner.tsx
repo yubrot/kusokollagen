@@ -1,3 +1,5 @@
+import clsx from 'clsx';
+
 export interface Props {
   className?: string;
 }
@@ -5,7 +7,7 @@ export interface Props {
 export default function LoadingSpinner({ className }: Props): React.ReactElement {
   return (
     <svg
-      className={`animate-spin ${className ?? ''}`}
+      className={clsx('animate-spin', className)}
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"

@@ -5,7 +5,7 @@ const max = 18;
 export interface Palette {
   colors: string[];
   selectedColor: string;
-  selectColor(color: string): void;
+  selectColor: (color: string) => void;
 }
 
 export function usePalette(initialColors: () => string[]): Palette {
@@ -30,7 +30,10 @@ export function usePalette(initialColors: () => string[]): Palette {
 
 function defaultColors(initialColors: string[]): string[] {
   const set = new Set<string>();
-  return [...initialColors, ...'0123456789abcdef'.split('').map(c => `#${c}${c}${c}`)]
-    .filter(color => !set.has(color) && set.add(color))
-    .slice(0, max);
+  return (
+    [...initialColors, ...'0123456789abcdef'.split('').map(c => `#${c}${c}${c}`)]
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+      .filter(color => !set.has(color) && set.add(color))
+      .slice(0, max)
+  );
 }

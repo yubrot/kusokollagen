@@ -8,9 +8,9 @@ import { useCallback, useState } from 'react';
 
 export interface Select extends Tool<'select'> {
   mode: Mode;
-  setMode(mode: Mode): void;
+  setMode: (mode: Mode) => void;
   rectMode: rect.RectMode;
-  setRectMode(mode: rect.RectMode): void;
+  setRectMode: (mode: rect.RectMode) => void;
 
   selectingColor: string;
   selectingRect: rect.Rect | null;
@@ -22,8 +22,8 @@ export type Mode = 'move' | 'fill-with-surrounding-color' | 'fill-with-selected-
 export interface Options {
   palette: Palette;
   image: TemplateImage;
-  stageImageChange(): Promise<void>;
-  commitChanges(): void;
+  stageImageChange: () => Promise<void>;
+  commitChanges: () => void;
 }
 
 export function useSelect({ palette, image, stageImageChange, commitChanges }: Options): Select {
@@ -82,7 +82,7 @@ export function useSelect({ palette, image, stageImageChange, commitChanges }: O
         switch (state) {
           case 'down':
             if (!rect.contains(x, y, floatingImage.rect)) {
-              commitFloatingImage();
+              await commitFloatingImage();
               break;
             }
             setDragPosition({ x, y });
@@ -106,7 +106,7 @@ export function useSelect({ palette, image, stageImageChange, commitChanges }: O
           if (!selectingArea) break;
           setSelectingArea(dragArea.to(selectingArea, x, y));
           break;
-        case 'up':
+        case 'up': {
           if (!selectingArea) break;
           setSelectingArea(null);
           if (!imageCtx) return;
@@ -129,6 +129,7 @@ export function useSelect({ palette, image, stageImageChange, commitChanges }: O
             commitChanges();
           }
           break;
+        }
       }
     },
     complete: commitFloatingImage,
@@ -136,7 +137,10 @@ export function useSelect({ palette, image, stageImageChange, commitChanges }: O
 }
 
 export class FloatingImage {
-  constructor(readonly blob: Blob, readonly rect: rect.Rect) {}
+  constructor(
+    readonly blob: Blob,
+    readonly rect: rect.Rect
+  ) {}
 
   async render(ctx: CanvasRenderingContext2D): Promise<void> {
     const imageBitmap = await createImageBitmap(this.blob);

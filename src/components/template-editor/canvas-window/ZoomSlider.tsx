@@ -1,11 +1,12 @@
+import clsx from 'clsx';
 import Icon24 from '../../basics/Icon24';
 import Slider from '../../basics/Slider';
 
 export interface Props {
   scale: number;
   scaleRange: readonly [number, number, number];
-  setScale?(scale: number): void;
-  resetScale?(): void;
+  setScale?: (scale: number) => void;
+  resetScale?: () => void;
   className?: string;
 }
 
@@ -17,7 +18,7 @@ export default function ZoomSlider({
   className,
 }: Props): React.ReactElement {
   return (
-    <div className={`flex flex-col ${className ?? ''}`}>
+    <div className={clsx('flex flex-col', className)}>
       <Slider value={scale} range={scaleRange} onChange={setScale} className="flex-grow" />
       <button
         className="button text-xs self-end py-1 px-2 mb-1 hover:bg-gray-200"

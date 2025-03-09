@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import Icon20 from './Icon20';
 import { useDelayedEffect } from './hooks/delay';
 import React, { useState } from 'react';
@@ -7,10 +8,10 @@ export type Severity = 'error' | 'warn' | 'info' | 'success';
 export interface Props {
   severity: Severity;
   message: string;
-  resolve(): void;
+  resolve: (_: undefined) => void;
 }
 
-const itemClassNames: { [K in Severity]: string } = {
+const itemClassNames: Record<Severity, string> = {
   error: 'text-red-800 border-2 border-red-400',
   warn: 'text-yellow-800 border-2 border-yellow-400',
   info: 'text-blue-800 border-2 border-blue-500',
@@ -19,8 +20,14 @@ const itemClassNames: { [K in Severity]: string } = {
 
 export default function Toast({ severity, message, resolve }: Props): React.ReactElement {
   const [show, setShow] = useState(false);
-  useDelayedEffect(() => setShow(true), 50, []);
-  useDelayedEffect(resolve, 8000, [resolve]);
+  const start = () => {
+    setShow(true);
+  };
+  const end = () => {
+    resolve(undefined);
+  };
+  useDelayedEffect(start, 50, []);
+  useDelayedEffect(end, 8000, [resolve]);
 
   const transition = show
     ? 'translate-y-0 scale-100 ease-out opacity-100'
@@ -29,8 +36,12 @@ export default function Toast({ severity, message, resolve }: Props): React.Reac
   return (
     <div className="fixed z-40 top-0 inset-x-0 flex justify-center">
       <button
-        className={`button absolute mt-20 p-3 space-x-4 flex items-center bg-white rounded-lg shadow-xl transform ${transition} ${itemClassNames[severity]}`}
-        onClick={resolve}
+        className={clsx(
+          'button absolute mt-20 p-3 space-x-4 flex items-center bg-white rounded-lg shadow-xl transform',
+          transition,
+          itemClassNames[severity]
+        )}
+        onClick={end}
       >
         <div>{message}</div>
         <Icon20 name="x" className="w-5 h-5" />
@@ -39,8 +50,10 @@ export default function Toast({ severity, message, resolve }: Props): React.Reac
   );
 }
 
-export function toast(severity: Severity, message: string) {
-  return function OrphanToast(resolve: (_: void) => void): React.ReactElement {
+export function toast(severity: Severity, message: string, error?: unknown) {
+  // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+  message = `${message}: ${error instanceof Error ? error.message : error}`;
+  return function OrphanToast(resolve: (_: undefined) => void): React.ReactElement {
     return <Toast severity={severity} message={message} resolve={resolve} />;
   };
 }

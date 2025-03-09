@@ -4,8 +4,8 @@ export interface TemplateImage {
   ctx: CanvasRenderingContext2D | null;
   width: number;
   height: number;
-  resize(width: number, height: number): void;
-  ref(node: HTMLCanvasElement | null): void;
+  resize: (width: number, height: number) => void;
+  ref: (node: HTMLCanvasElement | null) => void;
 }
 
 export function useTemplateImage(initialSize?: { width: number; height: number }): TemplateImage {

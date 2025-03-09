@@ -6,13 +6,13 @@ import { useState } from 'react';
 
 export interface Text extends Tool<'text'> {
   currentLabel: number | null;
-  setCurrentLabel(index: number | null): void;
+  setCurrentLabel: (index: number | null) => void;
 }
 
 export interface Options {
   palette: Palette;
   labels: label.Label[];
-  changeLabels(labels: label.Label[]): void;
+  changeLabels: (labels: label.Label[]) => void;
 }
 
 export function useText({ labels, changeLabels, palette }: Options): Text {
@@ -51,7 +51,7 @@ export function useText({ labels, changeLabels, palette }: Options): Text {
             break;
           }
 
-          const [, i] = targetLabels.find(([, i]) => i == currentLabel) || targetLabels[0];
+          const [, i] = targetLabels.find(([, i]) => i == currentLabel) ?? targetLabels[0];
           setCurrentLabel(i);
           setDragPosition({ x, y });
           break;

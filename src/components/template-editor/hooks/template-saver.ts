@@ -3,7 +3,7 @@ import { useState } from 'react';
 
 export interface TemplateSaver {
   hasDifference: boolean;
-  save(force: boolean): Promise<void>;
+  save: (force: boolean) => Promise<void>;
 }
 
 // Tracks the last saved template

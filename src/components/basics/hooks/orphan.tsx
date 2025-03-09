@@ -26,7 +26,7 @@ export type Detach = <T>(
 
 const OrphanContext = createContext<Orphan>({
   elements: [],
-  detach: Promise.reject,
+  detach: () => Promise.reject(new Error()),
 });
 
 export function useDetach(): Detach {
@@ -41,13 +41,14 @@ export function OrphanProvider({ children }: OrphanProviderProps): React.ReactEl
   const [elements, setElements] = useState<OrphanElement[]>([]);
   const idRef = useRef(0);
 
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   const detach = useCallback(
     (handler => {
       const id = ++idRef.current;
-      return new Promise((resolve, reject) =>
-        setElements(ls => [...ls, { id, body: handler(resolve, reject) }])
-      ).finally(() => setElements(ls => ls.filter(element => element.id != id)));
+      return new Promise((resolve, reject) => {
+        setElements(ls => [...ls, { id, body: handler(resolve, reject) }]);
+      }).finally(() => {
+        setElements(ls => ls.filter(element => element.id != id));
+      });
     }) as Detach,
     []
   );

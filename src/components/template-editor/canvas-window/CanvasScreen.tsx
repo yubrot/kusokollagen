@@ -7,6 +7,7 @@ import FloatingImage from './canvas-screen/FloatingImage';
 import LabelPreview from './canvas-screen/LabelPreview';
 import PenNib from './canvas-screen/PenNib';
 import SelectionRect from './canvas-screen/SelectionRect';
+import clsx from 'clsx';
 
 export interface Props {
   min?: { width: number; height: number };
@@ -17,14 +18,14 @@ export interface Props {
     max: number;
     step: number;
     value: number;
-    set?(scale: number): void;
-    reset?(): void;
+    set?: (scale: number) => void;
+    reset?: () => void;
   };
   mouse?: {
     cursor?: string | null;
-    onDrag?(x: number, y: number, state: MouseDragState): void;
-    onMove?(x: number, y: number): void;
-    onWheel?(delta: number): void;
+    onDrag?: (x: number, y: number, state: MouseDragState) => void;
+    onMove?: (x: number, y: number) => void;
+    onWheel?: (delta: number) => void;
   };
   crop?: {
     rect: Rect;
@@ -111,7 +112,7 @@ export default function CanvasScreen({
   return (
     <div
       ref={screenMouse.ref}
-      className={`overflow-auto bg-bluegray-500 ${className ?? ''}`}
+      className={clsx('overflow-auto bg-slate-500', className)}
       style={{
         width: `${containerWidth}px`,
         height: `${containerHeight}px`,

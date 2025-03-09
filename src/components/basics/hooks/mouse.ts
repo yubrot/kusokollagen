@@ -13,9 +13,9 @@ export interface Mouse {
 export type MouseDragState = 'down' | 'move' | 'up';
 
 export interface Options {
-  onDrag?(ev: MouseEvent, state: MouseDragState, container: HTMLElement): void;
-  onMove?(ev: MouseEvent, container: HTMLElement): void;
-  onWheel?(ev: WheelEvent, container: HTMLElement): void;
+  onDrag?: (ev: MouseEvent, state: MouseDragState, container: HTMLElement) => void;
+  onMove?: (ev: MouseEvent, container: HTMLElement) => void;
+  onWheel?: (ev: WheelEvent, container: HTMLElement) => void;
 }
 
 export function useMouse({ onDrag, onMove, onWheel }: Options): Mouse {
@@ -72,7 +72,9 @@ function useMouseMove(container: HTMLElement | null, onMove: Options['onMove']):
 
     container.addEventListener('mousemove', handleMove);
 
-    return () => container.removeEventListener('mousemove', handleMove);
+    return () => {
+      container.removeEventListener('mousemove', handleMove);
+    };
   }, [container, hasMove]);
 }
 
@@ -88,7 +90,9 @@ function useMouseWheel(container: HTMLElement | null, onWheel: Options['onWheel'
 
     container.addEventListener('wheel', handleWheel);
 
-    return () => container.removeEventListener('wheel', handleWheel);
+    return () => {
+      container.removeEventListener('wheel', handleWheel);
+    };
   }, [container, hasWheel]);
 }
 

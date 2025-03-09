@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import Icon24 from '../basics/Icon24';
 import { useDetach } from '../basics/hooks/orphan';
 import CanvasScreen, { Props as ScreenProps } from './canvas-window/CanvasScreen';
@@ -9,19 +10,19 @@ import { useCallback } from 'react';
 
 export interface Props {
   name: string;
-  onNameChange?(name: string): void;
+  onNameChange?: (name: string) => void;
 
   canSave?: boolean;
-  onSave?(): void;
+  onSave?: () => void;
   hasDifference?: boolean;
 
   canDelete?: boolean;
-  onDelete?(): void;
+  onDelete?: () => void;
 
   canUndo?: boolean;
   canRedo?: boolean;
-  onUndo?(): void;
-  onRedo?(): void;
+  onUndo?: () => void;
+  onRedo?: () => void;
 
   screen: Omit<ScreenProps, 'className'>;
   className?: string;
@@ -54,11 +55,11 @@ export default function CanvasWindow({
   }, [detach, onDelete]);
 
   return (
-    <div className={`bg-white border-4 border-bluegray-300 ${className ?? ''}`}>
-      <div className="font-bold flex justify-between items-stretch border-b border-bluegray-300">
+    <div className={clsx('bg-white border-4 border-slate-300', className)}>
+      <div className="font-bold flex justify-between items-stretch border-b border-slate-300">
         <input
           type="text"
-          className="self-center flex-grow w-0 label py-1 px-2 my-2 mx-4 bg-transparent border-b border-bluegray-400 transition hover:border-bluegray-500 focus:border-blue-500 focus:outline-none"
+          className="self-center flex-grow w-0 label py-1 px-2 my-2 mx-4 bg-transparent border-b border-slate-400 transition hover:border-slate-500 focus:border-blue-500 focus:outline-none"
           value={name}
           onChange={e => onNameChange?.(e.target.value)}
         />

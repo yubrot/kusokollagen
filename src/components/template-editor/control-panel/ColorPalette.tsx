@@ -1,7 +1,9 @@
+import clsx from 'clsx';
+
 export interface Props {
   colors: string[];
   selectedColor: string;
-  selectColor?(color: string): void;
+  selectColor?: (color: string) => void;
   className?: string;
 }
 
@@ -12,15 +14,16 @@ export default function ColorPalette({
   className,
 }: Props): React.ReactElement {
   return (
-    <div className={`flex ${className ?? ''}`}>
+    <div className={clsx('flex', className)}>
       {colors.map(color => (
         <button
           key={color}
           onClick={() => selectColor?.(color)}
           style={{ backgroundColor: color }}
-          className={`button flex-grow h-6 border-4 ${
+          className={clsx(
+            'button flex-grow h-6 border-4',
             color == selectedColor ? 'border-gray-400' : 'border-gray-100 hover:border-gray-300'
-          }`}
+          )}
         />
       ))}
     </div>

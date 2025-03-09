@@ -1,7 +1,7 @@
 import Confirm from '../../basics/Confirm';
 
 export interface Props {
-  resolve(value: boolean): void;
+  resolve: (value: boolean) => void;
 }
 
 export default function ConfirmDeleteTemplate({ resolve }: Props): React.ReactElement {
@@ -12,7 +12,7 @@ export default function ConfirmDeleteTemplate({ resolve }: Props): React.ReactEl
       acceptIconName="trash"
       acceptClassName="text-red-600"
       declineTitle="Cancel"
-      declineClassName="text-bluegray-500"
+      declineClassName="text-slate-500"
       resolve={resolve}
     >
       Are you sure you want to delete the template? <br />

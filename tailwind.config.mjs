@@ -1,14 +1,4 @@
-import colors from 'tailwindcss/colors';
-
 export default {
-  content: ['./src/**/*.{jsx,ts,jsx,tsx}'],
-  theme: {
-    extend: {
-      colors: {
-        bluegray: colors.slate,
-      },
-    },
-  },
   variants: {
     extend: {
       textColor: ['disabled'],

@@ -12,7 +12,7 @@ export interface ToolBox {
   text: Text;
   crop: Crop;
   currentTool: Tool;
-  setCurrentTool(name: ToolName): Promise<void>;
+  setCurrentTool: (name: ToolName) => Promise<void>;
 }
 
 export type ToolName = Tool['name'];

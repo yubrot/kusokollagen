@@ -6,12 +6,12 @@ import { useCallback, useRef, useState } from 'react';
 
 export interface Pen extends Tool<'pen'> {
   radius: number;
-  setRadius(size: number): void;
+  setRadius: (size: number) => void;
   mode: Mode;
-  setMode(mode: Mode): void;
+  setMode: (mode: Mode) => void;
   previewColor: string;
   previewPosition: [number, number] | null;
-  resetPreviewPosition(): void;
+  resetPreviewPosition: () => void;
 }
 
 export type Mode = 'surrounding-color' | 'selected-color';
@@ -19,8 +19,8 @@ export type Mode = 'surrounding-color' | 'selected-color';
 export interface Options {
   palette: Palette;
   image: TemplateImage;
-  stageImageChange(): Promise<void>;
-  commitChanges(): void;
+  stageImageChange: () => Promise<void>;
+  commitChanges: () => void;
 }
 
 export function usePen({ image, stageImageChange, commitChanges, palette }: Options): Pen {
@@ -31,7 +31,9 @@ export function usePen({ image, stageImageChange, commitChanges, palette }: Opti
   const strokeColor = mode == 'selected-color' ? palette.selectedColor : '#f0f';
 
   const [previewPosition, setPreviewPosition] = useState<[number, number] | null>(null);
-  const resetPreviewPosition = useCallback(() => setPreviewPosition(null), []);
+  const resetPreviewPosition = useCallback(() => {
+    setPreviewPosition(null);
+  }, []);
 
   return {
     name: 'pen',

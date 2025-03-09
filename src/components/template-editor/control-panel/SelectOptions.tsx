@@ -1,13 +1,14 @@
 import type { RectMode } from '../models/rect';
 import type { Mode } from '../hooks/tool/select';
 import CheckOption from '../../basics/CheckOption';
+import clsx from 'clsx';
 
 export interface Props {
   selectedColor: string;
   mode: Mode;
-  setMode?(mode: Mode): void;
+  setMode?: (mode: Mode) => void;
   rectMode: RectMode;
-  setRectMode?(mode: RectMode): void;
+  setRectMode?: (mode: RectMode) => void;
   className?: string;
 }
 
@@ -24,20 +25,20 @@ export default function SelectOptions({
     (selected ? ' bg-blue-100' : '');
 
   return (
-    <div className={`flex flex-col items-strech space-y-1 ${className ?? ''}`}>
+    <div className={clsx('flex flex-col items-strech space-y-1', className)}>
       <div className="flex justify-center space-x-1">
         <button
           className={rectModeClassName(rectMode == 'rectangle')}
           onClick={() => setRectMode?.('rectangle')}
         >
-          <div className="w-5 h-5 border-2 border-bluegray-500" />
+          <div className="w-5 h-5 border-2 border-slate-500" />
           <div className="text-xs">Rectangle</div>
         </button>
         <button
           className={rectModeClassName(rectMode == 'ellipse')}
           onClick={() => setRectMode?.('ellipse')}
         >
-          <div className="w-5 h-5 border-2 border-bluegray-500 rounded-full" />
+          <div className="w-5 h-5 border-2 border-slate-500 rounded-full" />
           <div className="text-xs">Ellipse</div>
         </button>
       </div>

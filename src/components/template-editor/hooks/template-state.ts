@@ -9,15 +9,15 @@ export interface TemplateState {
   current: Template<TemplateImage>;
   staged: Template;
 
-  changeName(name: string): void;
-  changeLabels(labels: Label[]): void;
-  stageImageChange(): Promise<void>;
-  commitChanges(): void;
+  changeName: (name: string) => void;
+  changeLabels: (labels: Label[]) => void;
+  stageImageChange: () => Promise<void>;
+  commitChanges: () => void;
 
   canUndo: boolean;
   canRedo: boolean;
-  undo(): void;
-  redo(): void;
+  undo: () => void;
+  redo: () => void;
 }
 
 export function useTemplateState(source: Template): TemplateState {

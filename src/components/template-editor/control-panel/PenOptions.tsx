@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import CheckOption from '../../basics/CheckOption';
 import Slider from '../../basics/Slider';
 import type { Mode } from '../hooks/tool/pen';
@@ -5,9 +6,9 @@ import type { Mode } from '../hooks/tool/pen';
 export interface Props {
   selectedColor: string;
   radius: number;
-  setRadius?(value: number): void;
+  setRadius?: (value: number) => void;
   mode: Mode;
-  setMode?(mode: Mode): void;
+  setMode?: (mode: Mode) => void;
   className?: string;
 }
 
@@ -20,7 +21,7 @@ export default function PenOptions({
   className,
 }: Props): React.ReactElement {
   return (
-    <div className={`flex flex-col items-strech ${className ?? ''}`}>
+    <div className={clsx('flex flex-col items-strech', className)}>
       <div className="flex items-center space-x-2 text-sm">
         <div>Size</div>
         <Slider value={radius} range={[1, 50, 1]} onChange={setRadius} className="flex-grow px-2" />

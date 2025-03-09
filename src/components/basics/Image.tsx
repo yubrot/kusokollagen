@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import LoadingSpinner from './LoadingSpinner';
 import { useEffect, useState } from 'react';
 
@@ -21,7 +20,9 @@ export default function Image({
     if (src instanceof Blob) {
       const url = URL.createObjectURL(src);
       setBlobUrl(url);
-      return () => URL.revokeObjectURL(url);
+      return () => {
+        URL.revokeObjectURL(url);
+      };
     } else {
       setBlobUrl(null);
     }
@@ -33,7 +34,9 @@ export default function Image({
     <img
       src={url}
       className={className}
-      onLoad={() => url == blobUrl && URL.revokeObjectURL(url)}
+      onLoad={() => {
+        if (url == blobUrl) URL.revokeObjectURL(url);
+      }}
       alt={alt}
     />
   ) : (

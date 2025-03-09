@@ -1,3 +1,4 @@
+import clsx from 'clsx';
 import type { Label } from '../../models/label';
 import * as l from '../../models/label';
 
@@ -41,7 +42,7 @@ export default function LabelPreview({
         }}
       >
         {l.linesAndCharacters(label.text).map((line, i) => (
-          <div key={i} className={`flex items-center ${label.vertical ? 'flex-col' : ''}`}>
+          <div key={i} className={clsx('flex items-center', label.vertical ? 'flex-col' : '')}>
             {line.map((c, j) => (
               <div key={j} style={label.vertical ? l.verticalCharacterStyle(c).style : {}}>
                 {c}

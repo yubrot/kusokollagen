@@ -8,7 +8,7 @@ import ToolTabBar from './ToolTabBar';
 
 export interface Props {
   selectedTool: ToolName;
-  onToolSelect?(name: ToolName): void;
+  onToolSelect?: (name: ToolName) => void;
   dropper: Omit<DropperProps, 'className'>;
   pen: Omit<PenProps, 'className'>;
   select: Omit<SelectProps, 'className'>;

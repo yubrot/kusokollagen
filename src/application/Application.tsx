@@ -17,12 +17,14 @@ export default function Application(): React.ReactElement {
         const image = await createImageBitmap(file);
         setTemplate({ name: file.name, image, labels: [] });
       } catch (e) {
-        detach(toast('error', `Failed to load image: ${e instanceof Error ? e.message : e}`));
+        void detach(toast('error', 'Failed to load image', e));
       }
     },
     [detach, setTemplate]
   );
-  const deleteTemplate = useCallback(async () => setTemplate(null), [setTemplate]);
+  const deleteTemplate = useCallback(async () => {
+    setTemplate(null);
+  }, [setTemplate]);
 
   return (
     <div className="absolute inset-0 flex flex-col">

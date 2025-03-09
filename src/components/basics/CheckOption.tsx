@@ -1,9 +1,10 @@
+import clsx from 'clsx';
 import Icon20 from './Icon20';
 
 export interface Props {
   label?: string;
   checked?: boolean;
-  onClick?(): void;
+  onClick?: () => void;
   className?: string;
 }
 
@@ -15,16 +16,17 @@ export default function CheckOption({
 }: Props): React.ReactElement {
   return (
     <button
-      className={`group button text-sm flex items-center space-x-2 p-1 ${className || ''}`}
+      className={clsx('group button text-sm flex items-center space-x-2 p-1', className)}
       onClick={onClick}
     >
       <div
         style={{ width: '16px', height: '16px' }}
-        className={`relative rounded-md border-2 overflow-visible transition ${
+        className={clsx(
+          'relative rounded-md border-2 overflow-visible transition',
           checked
             ? 'bg-blue-100 border-blue-300'
-            : 'bg-white border-bluegray-300 group-hover:border-blue-300'
-        }`}
+            : 'bg-white border-slate-300 group-hover:border-blue-300'
+        )}
       >
         {checked && (
           <Icon20

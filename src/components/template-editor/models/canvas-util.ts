@@ -12,15 +12,15 @@ export function createCanvas(source: CanvasSource, copy = true): HTMLCanvasEleme
 
 export function getBlob(source: CanvasSource, mimetype: string): Promise<Blob> {
   const canvas = createCanvas(source, false);
-  return new Promise<Blob>((resolve, reject) =>
+  return new Promise<Blob>((resolve, reject) => {
     canvas.toBlob(blob => {
       if (blob) {
         resolve(blob);
       } else {
-        reject('Failed to get blob');
+        reject(new Error('Failed to get blob'));
       }
-    }, mimetype)
-  );
+    }, mimetype);
+  });
 }
 
 export function getPixelColor(ctx: CanvasRenderingContext2D, x: number, y: number): string {
@@ -50,7 +50,7 @@ export function sampleSurroundingColors(
       Math.min(t, y - radius),
       Math.max(b, y + radius),
     ],
-    [Infinity, -Infinity, Infinity, -Infinity] as const
+    [Infinity, -Infinity, Infinity, -Infinity]
   );
 
   l = Math.max(0, l);

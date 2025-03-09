@@ -29,14 +29,14 @@ export function linesAndCharacters(s: string): string[][] {
 export function characters(s: string): string[] {
   return Array.from(s.matchAll(/[0-9０-９]+|[!?！？]+|./g), m => {
     let c = m[0];
-    if (c.match(/[0-9０-９]+/)) {
+    if (/[0-9０-９]+/.exec(c)) {
       const offset1 = '0'.charCodeAt(0) - '０'.charCodeAt(0);
       c = c.replace(/[０-９]/g, d => String.fromCharCode(d.charCodeAt(0) + offset1));
       if (c.length > 1) {
         const offset2 = '\u{E030}'.charCodeAt(0) - '0'.charCodeAt(0);
         c = c.replace(/[0-9]/g, d => String.fromCharCode(d.charCodeAt(0) + offset2));
       }
-    } else if (c.match(/[!?！？]+/)) {
+    } else if (/[!?！？]+/.exec(c)) {
       const chars = c.split('').map(d => (d == '！' ? '!' : d == '？' ? '?' : d));
       c = '';
       while (chars.length != 0) {
@@ -74,22 +74,28 @@ export interface VerticalCharacterStyle {
 }
 
 export function verticalCharacterStyle(c: string): VerticalCharacterStyle {
-  if (c.match(/[、。]/)) {
+  if (/[、。]/.exec(c)) {
     return {
       style: { transform: 'translate(0.5em, -0.5em)' },
-      transform: (ctx, em) => ctx.translate(0.5 * em, -0.5 * em),
+      transform: (ctx, em) => {
+        ctx.translate(0.5 * em, -0.5 * em);
+      },
     };
-  } else if (c.match(/[ぁぃぅぇぉっゃゅょゎヶヵ]/)) {
+  } else if (/[ぁぃぅぇぉっゃゅょゎヶヵ]/.exec(c)) {
     return {
       style: { transform: 'translate(0.1em, -0.1em)' },
-      transform: (ctx, em) => ctx.translate(0.1 * em, -0.1 * em),
+      transform: (ctx, em) => {
+        ctx.translate(0.1 * em, -0.1 * em);
+      },
     };
-  } else if (c.match(/[（）｛｝「」『』…(){}[\]【】―]/)) {
+  } else if (/[（）｛｝「」『』…(){}[\]【】―]/.exec(c)) {
     return {
       style: { transform: 'rotateZ(90deg)' },
-      transform: ctx => ctx.rotate(Math.PI / 2),
+      transform: ctx => {
+        ctx.rotate(Math.PI / 2);
+      },
     };
-  } else if (c.match(/[ー～]/)) {
+  } else if (/[ー～]/.exec(c)) {
     return {
       style: { transform: 'scaleX(-1) rotateZ(90deg)' },
       transform: ctx => {
@@ -120,7 +126,7 @@ function measureLabelRect(label: Label): Rect {
   if (!measureCtx) {
     const canvas = document.createElement('canvas');
     measureCtx = canvas.getContext('2d');
-    if (!measureCtx) throw 'Failed to get canvas 2d context';
+    if (!measureCtx) throw new Error('Failed to get canvas 2d context');
   }
   const ctx = measureCtx;
 

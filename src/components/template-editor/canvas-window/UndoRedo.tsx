@@ -1,10 +1,11 @@
+import clsx from 'clsx';
 import Icon20 from '../../basics/Icon20';
 
 export interface Props {
   canUndo?: boolean;
   canRedo?: boolean;
-  onUndo?(): void;
-  onRedo?(): void;
+  onUndo?: () => void;
+  onRedo?: () => void;
   className?: string;
 }
 
@@ -16,7 +17,7 @@ export default function UndoRedo({
   className,
 }: Props): React.ReactElement {
   return (
-    <div className={`flex items-strech ${className ?? ''}`}>
+    <div className={clsx('flex items-strech', className)}>
       <button className="button icon-button" disabled={!canUndo} onClick={onUndo}>
         <Icon20 name="ccw" className="w-5 h-5" />
         <div>Undo</div>

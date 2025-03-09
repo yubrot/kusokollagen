@@ -2,7 +2,7 @@ import { useRef, useEffect, useState } from 'react';
 
 export interface ImageBitmapOrError {
   data: ImageBitmap | null;
-  error: unknown | null;
+  error: unknown;
 }
 
 export function useImageBitmap(url: string | null): ImageBitmapOrError {
@@ -17,7 +17,7 @@ export function useImageBitmap(url: string | null): ImageBitmapOrError {
 
     isMounted.current = true;
 
-    (async () => {
+    void (async () => {
       try {
         const response = await fetch(url, { mode: 'cors' });
         const blob = await response.blob();

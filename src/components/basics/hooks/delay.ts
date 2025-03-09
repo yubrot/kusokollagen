@@ -11,7 +11,9 @@ export function useDelay(): (action: () => void, delay: number) => () => void {
   return useCallback((action: () => void, delay: number) => {
     clearTimeout(timeout.current);
     timeout.current = window.setTimeout(action, delay);
-    return () => clearTimeout(timeout.current);
+    return () => {
+      clearTimeout(timeout.current);
+    };
   }, []);
 }
 
@@ -29,6 +31,12 @@ export function useDelayedEffect(action: () => void, delay: number, deps: Depend
  */
 export function useDelayedValue<T>(value: T, delay: number): T {
   const [deferredValue, setDeferredValue] = useState(value);
-  useDelayedEffect(() => setDeferredValue(value), delay, [value]);
+  useDelayedEffect(
+    () => {
+      setDeferredValue(value);
+    },
+    delay,
+    [value]
+  );
   return deferredValue;
 }

@@ -1,16 +1,24 @@
+import clsx from 'clsx';
 import LoadingSpinner from './LoadingSpinner';
 import { useDelayedEffect } from './hooks/delay';
 import { useState } from 'react';
 
-export interface Props {}
-
-export default function Progress(_: Props): React.ReactElement {
+export default function Progress(): React.ReactElement {
   const [show, setShow] = useState(false);
-  useDelayedEffect(() => setShow(true), 100, []);
+  useDelayedEffect(
+    () => {
+      setShow(true);
+    },
+    100,
+    []
+  );
 
   return (
     <div
-      className={`fixed z-50 inset-0 bg-opacity-50 bg-bluegray-200 flex flex-col justify-center items-center fade-true-${show}`}
+      className={clsx(
+        'fixed z-50 inset-0 bg-opacity-50 bg-slate-200 flex flex-col justify-center items-center',
+        show ? 'transition ease-out opacity-100' : 'opacity-0 pointer-events-none'
+      )}
     >
       <LoadingSpinner className="w-24 h-24" />
     </div>

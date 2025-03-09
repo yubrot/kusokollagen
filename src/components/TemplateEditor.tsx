@@ -14,8 +14,8 @@ import { progress } from './basics/Progress';
 
 export interface Props {
   source: Template;
-  onSave?(diff: Partial<Template>): Promise<void>;
-  onDelete?(): Promise<void>;
+  onSave?: (diff: Partial<Template>) => Promise<void>;
+  onDelete?: () => Promise<void>;
 }
 
 export default function TemplateEditor({ source, onSave, onDelete }: Props): React.ReactElement {
@@ -47,7 +47,7 @@ export default function TemplateEditor({ source, onSave, onDelete }: Props): Rea
     try {
       await detach(progress(save(false)));
     } catch (e) {
-      detach(toast('error', `Failed to save template: ${e instanceof Error ? e.message : e}`));
+      void detach(toast('error', 'Failed to save template', e));
     }
   }, [currentTool, detach, save]);
 
@@ -55,7 +55,7 @@ export default function TemplateEditor({ source, onSave, onDelete }: Props): Rea
     try {
       await detach(progress(onDelete!()));
     } catch (e) {
-      detach(toast('error', `Failed to delete template: ${e instanceof Error ? e.message : e}`));
+      void detach(toast('error', 'Failed to delete template', e));
     }
   }, [detach, onDelete]);
 
@@ -63,7 +63,7 @@ export default function TemplateEditor({ source, onSave, onDelete }: Props): Rea
     try {
       await template.render(state.staged);
     } catch (e) {
-      detach(toast('error', `Failed to render image: ${e instanceof Error ? e.message : e}`));
+      void detach(toast('error', 'Failed to render image', e));
     }
   }
 
@@ -72,7 +72,9 @@ export default function TemplateEditor({ source, onSave, onDelete }: Props): Rea
   const max = { width: window.width * 0.5, height: window.height * 0.7 };
   const defaultScale = () => calculateDefaultScale(state.current.image, max);
   const [scale, setScale] = useState(defaultScale);
-  const resetScale = () => setScale(defaultScale());
+  const resetScale = () => {
+    setScale(defaultScale());
+  };
 
   return (
     <div className="flex justify-center items-start space-x-2">
